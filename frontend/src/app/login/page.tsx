@@ -15,17 +15,21 @@ const Login = () => {
     event.preventDefault();
     axios
       .post("http://localhost:8081/login", { usercol, password })
-      .then((res: any) => {
+      .then((res) => {
         console.log(res);
         alert(res.data); // Muestra la respuesta del servidor
         if (res.data === "Usuario reconocido") {
           router.push("/reservation"); // Redirige a la página en blanco
         }
       })
-      .catch((err: any) => {
+      .catch((err) => {
         console.error("Error en la solicitud:", err);
         alert("Error en la solicitud"); // Muestra un mensaje de error al usuario
       });
+  }
+
+  function handleRegister() {
+    router.push("/register");
   }
 
   return (
@@ -53,8 +57,9 @@ const Login = () => {
               className="form-control"
               onChange={(e) => setPassword(e.target.value)}
             />
-          </div>
-          <button className="btn btn-danger">Login</button>
+          </div >
+          <button type="submit" className="btn btn-danger mb-2">Login</button>
+          <button type="submit" className="btn btn-danger mb-6" onClick={handleRegister}> Register</button>
         </form>
       </div>
     </div>

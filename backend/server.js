@@ -30,6 +30,29 @@ try {
       }
     });
   });
+
+  app.post("/record", async (req, res) => {
+    const { username, email, password, confirmPassword } = req.body;
+  
+    if (password !== confirmPassword) {
+      return res.json({ error: "Passwords do not match" });
+    }
+  
+    const hashedPassword = await bcrypt.hash(password, 10);
+  
+    const sql = "INSERT INTO record (username, email, password) VALUES (?, ?, ?)";
+  
+    db.query(sql, [username, email, hashedPassword], (error, result) => {
+      if (error) {
+        return res.json(error);
+      }
+      if (result.length > 0) {
+        return res.json("User registered successfully");
+      } else {
+        return res.json("User registered error");
+      }
+    });
+  });
 } catch (error) {}
 
 app.listen(8081, () => {
