@@ -1,35 +1,31 @@
-"use client";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
-import React, { useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-
-import "@/styles/App.css";
-
-const Login = () => {
-  const [usercol, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function LoginView() {
+  const [usercol, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const router = useRouter();
 
   function handleSubmit(event: any) {
     event.preventDefault();
     axios
-      .post("http://localhost:8081/login", { usercol, password })
+      .post('http://localhost:8081/login', { usercol, password })
       .then((res) => {
         console.log(res);
         alert(res.data); // Muestra la respuesta del servidor
-        if (res.data === "Usuario reconocido") {
-          router.push("/reservation"); // Redirige a la página en blanco
+        if (res.data === 'Usuario reconocido') {
+          router.push('/reservation'); // Redirige a la página en blanco
         }
       })
       .catch((err) => {
-        console.error("Error en la solicitud:", err);
-        alert("Error en la solicitud"); // Muestra un mensaje de error al usuario
+        console.error('Error en la solicitud:', err);
+        alert('Error en la solicitud'); // Muestra un mensaje de error al usuario
       });
   }
 
   function handleRegister() {
-    router.push("/register");
+    router.push('/register');
   }
 
   return (
@@ -57,13 +53,20 @@ const Login = () => {
               className="form-control"
               onChange={(e) => setPassword(e.target.value)}
             />
-          </div >
-          <button type="submit" className="btn btn-danger mb-2">Login</button>
-          <button type="submit" className="btn btn-danger mb-6" onClick={handleRegister}> Register</button>
+          </div>
+          <button type="submit" className="btn btn-danger mb-2">
+            Login
+          </button>
+          <button
+            type="submit"
+            className="btn btn-danger mb-6"
+            onClick={handleRegister}
+          >
+            {' '}
+            Register
+          </button>
         </form>
       </div>
     </div>
   );
-};
-
-export default Login;
+}
