@@ -1,7 +1,11 @@
+const bcrypt = require('bcrypt');
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const cors = require("cors");
+
+const {tableCreation} = require('./schema/createTables');
+const tableNames = ["user", "restaurant", "review", "booking", "schedule"];
 
 app.use(cors());
 app.use(express.json());
@@ -53,7 +57,9 @@ try {
       }
     });
   });
-} catch (error) {}
+} catch (error) {
+  console.log(error);
+}
 
 app.listen(8081, () => {
   console.log("Conectado MYSQL...");
