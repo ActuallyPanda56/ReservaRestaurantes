@@ -5,7 +5,8 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
   export default function RegisterView() {
-    const [username, setUsername] = useState('');
+    const [name, setname] = useState('');
+    const [last_name, setLast_name] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,7 +22,8 @@ import { useRouter } from 'next/navigation';
 
       axios
         .post('http://localhost:8081/record', {
-          username,
+          name,
+          last_name,
           email,
           password,
           confirmPassword,
@@ -48,14 +50,25 @@ import { useRouter } from 'next/navigation';
       <div>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
-            <label htmlFor="username" className="text-gold">
-              Username
+            <label htmlFor="name" className="text-gold">
+              Name
             </label>
             <input
               type="text"
-              placeholder="Enter Username"
+              placeholder="Enter name"
               className="form-control"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setname(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="last_name" className="text-gold">
+            Last name
+            </label>
+            <input
+              type="text"
+              placeholder="Enter last name"
+              className="form-control"
+              onChange={(e) => setLast_name(e.target.value)}
             />
           </div>
           <div className="mb-3">
