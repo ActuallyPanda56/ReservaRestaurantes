@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
       }
 
       axios
-        .post('http://localhost:8081/record', {
+        .post('http://localhost:8081/register', {
           name,
           last_name,
           email,
