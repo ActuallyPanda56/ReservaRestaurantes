@@ -39,6 +39,19 @@ app.post("/login", (req, res) => {
     }
   });
 });
+app.post("/register", (req, res) => {
+  const sql = "INSERT INTO user (name, last_name, email, password) VALUES (?, ?, ?, ?)";
+
+  db.query(sql, [req.body.name, req.body.last_name, req.body.email, req.body.password], (error, result) => {
+    if (error) {
+      console.error("Error executing query:", error);
+      return res.status(500).json("Internal Server Error");
+    } else {
+      console.log("Number of records inserted: " + result.affectedRows);
+      return res.json("User registered successfully");
+    }
+  });
+});
 
 app.listen(8081, () => {
   console.log("Server running on port 8081...");
