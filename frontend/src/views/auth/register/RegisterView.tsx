@@ -4,43 +4,43 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-export default function RegisterView() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const router = useRouter();
+  export default function RegisterView() {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const router = useRouter();
 
-  const handleSubmit = (event: any) => {
-    event.preventDefault();
+    const handleSubmit = (event: any) => {
+      event.preventDefault();
 
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
+      if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+      }
 
-    axios
-      .post('http://localhost:8081/record', {
-        username,
-        email,
-        password,
-        confirmPassword,
-      })
-      .then((res) => {
-        console.log(res);
-        alert(res.data); // Muestra la respuesta del servidor
-        if (res.data === 'Usuario reconocido') {
-          router.push('/'); // Redirige a la página en blanco
-        }
-      })
-      .catch((err) => {
-        console.error('Error en la solicitud:', err);
-        alert('Error en la solicitud');
-      });
-  };
+      axios
+        .post('http://localhost:8081/record', {
+          username,
+          email,
+          password,
+          confirmPassword,
+        })
+        .then((res) => {
+          console.log(res);
+          alert(res.data); // Muestra la respuesta del servidor
+          if (res.data === 'Usuario reconocido') {
+            router.push('/'); // Redirige a la página en blanco
+          }
+        })
+        .catch((err) => {
+          console.error('Error en la solicitud:', err);
+          alert('Error en la solicitud');
+        });
+    };
 
   function handleCancel() {
-    router.push('/login');
+    router.push('/auth/login');
   }
 
   return (

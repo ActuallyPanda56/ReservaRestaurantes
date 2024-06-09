@@ -9,62 +9,35 @@ export default function LoginView() {
 
   function handleSubmit(event: any) {
     event.preventDefault();
-    axios
-      .post('http://localhost:8081/login', { usercol, password })
-      .then((res) => {
+    axios.post('http://localhost:8081/login', { usercol, password })
+      .then(res => {
         console.log(res);
-        alert(res.data); // Muestra la respuesta del servidor
-        if (res.data === 'Usuario reconocido') {
-          router.push('/reservation'); // Redirige a la página en blanco
+        alert(res.data);  // Muestra la respuesta del servidor
+        if (res.data === "Usuario reconocido") {
+          router.push('/reservation');  // Redirige a la página en blanco
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.error('Error en la solicitud:', err);
-        alert('Error en la solicitud'); // Muestra un mensaje de error al usuario
+        alert('Error en la solicitud');  // Muestra un mensaje de error al usuario
       });
   }
 
-  function handleRegister() {
-    router.push('/register');
-  }
-
   return (
-    <div className="d-flex vh-100 justify-content-center align-items-center bg-custom">
+    <div className='d-flex vh-100 justify-content-center align-items-center bg-custom'>
       <div>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="usercol" className="text-gold">
-              Email
-            </label>
-            <input
-              type="text"
-              placeholder="Enter Email"
-              className="form-control"
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <div className='mb-3'>
+            <label htmlFor="usercol" className='text-gold'>Email</label>
+            <input type="text" placeholder='Enter Email' className='form-control'
+              onChange={e => setEmail(e.target.value)} />
           </div>
-          <div className="mb-3">
-            <label htmlFor="password" className="text-gold">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Enter Password"
-              className="form-control"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+          <div className='mb-3'>
+            <label htmlFor="password" className='text-gold'>Password</label>
+            <input type="password" placeholder='Enter Password' className='form-control'
+              onChange={e => setPassword(e.target.value)} />
           </div>
-          <button type="submit" className="btn btn-danger mb-2">
-            Login
-          </button>
-          <button
-            type="submit"
-            className="btn btn-danger mb-6"
-            onClick={handleRegister}
-          >
-            {' '}
-            Register
-          </button>
+          <button className='btn btn-danger'>Login</button>
         </form>
       </div>
     </div>
