@@ -24,9 +24,9 @@ db.getConnection((err, connection) => {
 });
 
 app.post("/login", (req, res) => {
-  const sql = "SELECT * FROM user WHERE usercol = ? AND password = ?";
+  const sql = "SELECT * FROM user WHERE email = ? AND password = ?";
 
-  db.query(sql, [req.body.usercol, req.body.password], (error, data) => {
+  db.query(sql, [req.body.email, req.body.password], (error, data) => {
     if (error) {
       console.error("Error executing query:", error);
       return res.status(500).json("Internal Server Error");
