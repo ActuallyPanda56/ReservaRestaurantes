@@ -1,29 +1,7 @@
-const express = require("express");
-const app = express();
-const mysql = require("mysql");
-const cors = require("cors");
+const db = require("@web/index.js");
 
-app.use(cors());
-app.use(express.json());
-
-const db = mysql.createPool({
-  connectionLimit: 10,
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "curd",
-});
-
-db.getConnection((err, connection) => {
-  if (err) {
-    console.error('Error connecting to MySQL:', err);
-    return;
-  }
-  if (connection) connection.release();
-  console.log("Connected to MySQL...");
-});
-
-app.post("/login", (req, res) => {
+//  Login function
+const login = (req, res) => {
   const sql = "SELECT * FROM user WHERE email = ? AND password = ?";
 
   db.query(sql, [req.body.email, req.body.password], (error, data) => {
@@ -38,8 +16,9 @@ app.post("/login", (req, res) => {
       }
     }
   });
-});
-app.post("/register", (req, res) => {
+}
+
+const register = (req, res) => {
   const sql = "INSERT INTO user (name, last_name, email, password) VALUES (?, ?, ?, ?)";
 
   db.query(sql, [req.body.name, req.body.last_name, req.body.email, req.body.password], (error, result) => {
@@ -51,9 +30,6 @@ app.post("/register", (req, res) => {
       return res.json("User registered successfully");
     }
   });
-});
+}
 
-app.listen(8081, () => {
-  console.log("Server running on port 8081...");
-  console.log("holi");
-});
+module.exports = {login, register}

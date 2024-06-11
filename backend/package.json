@@ -4,16 +4,22 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "",
+  "_moduleAliases": {
+    "@root": ".",
+    "@web": "src/web"
+  },
   "license": "ISC",
   "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cors": "2.8.5",
     "express": "^4.19.2",
+    "module-alias": "^2.2.3",
     "mysql": "^2.18.1",
     "nodemon": "3.1.3"
   }
