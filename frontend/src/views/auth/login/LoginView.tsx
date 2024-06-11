@@ -10,7 +10,7 @@ export default function LoginView() {
   function handleSubmit(event: any) {
     event.preventDefault();
     axios
-      .post('http://localhost:8081/login', { email, password })
+      .post('http://localhost:8081/v1/auth/login', { email, password })
       .then((res) => {
         console.log(res);
         alert(res.data); // Muestra la respuesta del servidor
