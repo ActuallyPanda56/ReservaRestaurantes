@@ -1,20 +1,39 @@
 import React from 'react';
+import { GoLocation } from 'react-icons/go';
+import Login from './components/Login';
+
+// TODO: Fix styles
 
 export default function HomeView() {
   return (
-    <div style={{ minHeight: '100vh', padding: '20px', position: 'relative' }}>
-      <header style={{ textAlign: 'right' }}>
-        <button
-          className="bg-red-700 text-yellow-500 border-none py-2 px-4 rounded hover:bg-red-800 text-lg"
-          style={{ position: 'absolute', top: '20px', right: '20px' }}
-        >
-          Botón
-        </button>
-      </header>
-      <main>
-        <h1>Contenido de la página</h1>
-        <p>Aquí va el contenido de tu página.</p>
-      </main>
-    </div>
+    <main>
+      <div className="flex flex-col gap-20 w-screen relative">
+        <div className="flex justify-between h-screen w-screen px-20 pt-20 -z-10">
+          <div className="flex flex-col gap-20">
+            <div className="flex flex-col gap-5">
+              <span className="text-5xl font-semibold text-white">
+                Busca los restaurantes que estén a tu alrededor
+              </span>
+              <form className="flex items-center w-[600px] gap-2 px-2 bg-white rounded shadow-lg shadow-[--shadow]">
+                <GoLocation className="text-2xl mx-2" />
+                <input
+                  type="text"
+                  placeholder="Ingresa la dirección de tu casa"
+                  className="py-4"
+                />
+                <button className="btn-primary">Enviar</button>
+              </form>
+            </div>
+            <span>Slider</span>
+          </div>
+          <Login />
+          <div className="w-screen h-[320px] absolute top-0 left-0 bg-[--foreground] -z-[5]" />
+        </div>
+
+        <div>
+          <span>Slider</span>
+        </div>
+      </div>
+    </main>
   );
 }
