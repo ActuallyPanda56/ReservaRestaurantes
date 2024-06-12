@@ -5,7 +5,7 @@ import React from 'react';
 export default function Login() {
   return (
     <>
-      <div className="flex flex-col bg-white rounded-lg max-h-[600px] w-[600px] p-8 gap-4 shadow-2xl shadow-[--shadow]">
+      <div className="flex flex-col bg-white rounded-lg max-h-[600px] w-[600px] p-8 gap-4 shadow-2xl shadow-[--shadow] relative z-20">
         <span className="tracking-tighter text-3xl font-light">
           Inicio de sesión
         </span>
