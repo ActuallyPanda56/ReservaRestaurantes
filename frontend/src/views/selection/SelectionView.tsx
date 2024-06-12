@@ -24,7 +24,7 @@ const SelectionView = () => {
             height={100}
           />
           <button
-            className="w-full bg-red-700 text-yellow-500 border-none py-2 mt-2 rounded hover:bg-red-800 text-lg"
+            className="btn-primary py-2 mt-2"
             onClick={handleRegister}
           >
             Persona Natural
@@ -37,7 +37,7 @@ const SelectionView = () => {
             width={100}
             height={100}
           />
-          <button className="w-full bg-red-700 text-yellow-500 border-none py-2 mt-2 rounded hover:bg-red-800 text-lg">
+          <button className="btn-primary py-2 mt-2">
             Restaurante
           </button>
         </div>

@@ -1,7 +1,7 @@
 // @ts-nocheck
 'use client';
 
-import React, { useState } from 'react'; // Importa useState desde React
+import React, { useState, useEffect } from 'react'; // Importa useState y useEffect desde React
 import { GoLocation } from 'react-icons/go';
 import { FaReact, FaHeart } from 'react-icons/fa'; // Importa los iconos de react-icons
 import Login from './components/Login';
@@ -30,6 +30,12 @@ export default function HomeView() {
     setCurrentImageIndex(newIndex);
   };
 
+  // Utiliza useEffect para cambiar las imágenes automáticamente cada 4 segundos
+  useEffect(() => {
+    const interval = setInterval(goToNextSlide, 4000);
+    return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonta
+  }, [currentImageIndex]);
+
   return (
     <main>
       <div className="flex flex-col gap-20 w-screen relative">
@@ -46,22 +52,19 @@ export default function HomeView() {
                   placeholder="Ingresa la dirección de tu casa"
                   className="py-4"
                 />
-                <button className="btn-primary">Enviar</button>
+                <button className="btn-primary mx-2">Enviar</button>
               </form>
             </div>
-            <div className="relative w-full flex justify-center"> {/* Centra la imagen */}
-              <div className="w-[400px] h-[300px]"> {/* Tamaño mediano */}
+            <div className="relative w-full flex flex-col items-center"> {/* Centra la imagen y ajusta el tamaño */}
+              <div className="w-[300px] h-[200px]"> {/* Tamaño más pequeño */}
                 <Image src={images[currentImageIndex]} alt="Slide" layout="fill" objectFit="contain" />
               </div>
-              <button className="absolute top-1/2 transform -translate-y-1/2 left-4 bg-white p-2 rounded-full" onClick={goToPrevSlide}>{'<'}</button>
-              <button className="absolute top-1/2 transform -translate-y-1/2 right-4 bg-white p-2 rounded-full" onClick={goToNextSlide}>{'>'}</button>
+              <button className="absolute top-1/2 transform -translate-y-1/2 left-2 bg-orange-400 p-2 rounded-full" onClick={goToPrevSlide}>{'<'}</button>
+              <button className="absolute top-1/2 transform -translate-y-1/2 right-2 bg-orange-400 p-2 rounded-full" onClick={goToNextSlide}>{'>'}</button>
             </div>
+            <button className="btn-primary mt-4 absolute center-0 bottom-0">Ver más</button> {/* Botón "Ver más" */}
           </div>
           <Login />
-        </div>
-
-        <div>
-          <span>Slider</span>
         </div>
         <div className="w-screen h-[320px] absolute top-0 left-0 bg-[--foreground] -z-10" />
       </div>

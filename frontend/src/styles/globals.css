@@ -9,9 +9,9 @@
     "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
     "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
 
-  --shadow: #D8B16C;
-  --foreground: #A68263;
-  --background-start-rgb: 214, 219, 220;
+  --shadow: #d3b091; /* Color 2 */
+  --foreground: #A68263; /* Color 1 */
+  --background-start-rgb: 248, 234, 201; /* Color 3 converted to RGB */
   --background-end-rgb: 255, 255, 255;
 
   --primary-glow: conic-gradient(
@@ -64,6 +64,6 @@ a {
 
 @layer components {
   .btn-primary {
-    @apply py-2 px-5 bg-orange-400 text-white font-semibold rounded-full shadow-md hover:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
+    @apply py-2 px-5 bg-[#D8B16C] text-white font-semibold rounded-full shadow-md hover:bg-[#8B7357] focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
   }
 }
