@@ -21,7 +21,8 @@
     "react-slick": "^0.30.2",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.1.4",
-    "urql": "^4.1.0"
+    "urql": "^4.1.0",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
