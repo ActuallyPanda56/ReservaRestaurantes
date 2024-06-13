@@ -1,41 +1,14 @@
-// @ts-nocheck
-'use client';
-
-import React, { useState, useEffect } from 'react'; // Importa useState y useEffect desde React
+import React from 'react';
 import { GoLocation } from 'react-icons/go';
-import { FaReact, FaHeart } from 'react-icons/fa'; // Importa los iconos de react-icons
+
+import Carousel from '@/components/common/Carousel.tsx';
+import personaImage from '@/image/cui.jpg';
+import restauranteImage from '@/image/cuychiquito.jpg';
+
 import Login from './components/Login';
 
-// Importa las imágenes
-import Image from 'next/image';
-import personaImage from '@/image/cui.jpg'; // Ruta a tu imagen
-import restauranteImage from '@/image/cuychiquito.jpg'; // Ruta a tu imagen
-
 export default function HomeView() {
-
-  const images = [
-    personaImage,
-    restauranteImage,
-  ];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const goToNextSlide = () => {
-    const newIndex = (currentImageIndex + 1) % images.length;
-    setCurrentImageIndex(newIndex);
-  };
-
-  const goToPrevSlide = () => {
-    const newIndex = (currentImageIndex - 1 + images.length) % images.length;
-    setCurrentImageIndex(newIndex);
-  };
-
-  // Utiliza useEffect para cambiar las imágenes automáticamente cada 4 segundos
-  useEffect(() => {
-    const interval = setInterval(goToNextSlide, 4000);
-    return () => clearInterval(interval); // Limpia el intervalo cuando el componente se desmonta
-  }, [currentImageIndex]);
-
+  const images = [personaImage, restauranteImage]; // Crea un array con las imágenes
   return (
     <main>
       <div className="flex flex-col gap-20 w-screen relative">
@@ -55,14 +28,11 @@ export default function HomeView() {
                 <button className="btn-primary mx-2">Enviar</button>
               </form>
             </div>
-            <div className="relative w-full flex flex-col items-center"> {/* Centra la imagen y ajusta el tamaño */}
-              <div className="w-[300px] h-[200px]"> {/* Tamaño más pequeño */}
-                <Image src={images[currentImageIndex]} alt="Slide" layout="fill" objectFit="contain" />
-              </div>
-              <button className="absolute top-1/2 transform -translate-y-1/2 left-2 bg-orange-400 p-2 rounded-full" onClick={goToPrevSlide}>{'<'}</button>
-              <button className="absolute top-1/2 transform -translate-y-1/2 right-2 bg-orange-400 p-2 rounded-full" onClick={goToNextSlide}>{'>'}</button>
-            </div>
-            <button className="btn-primary mt-4 absolute center-0 bottom-0">Ver más</button> {/* Botón "Ver más" */}
+            <Carousel images={images} />
+            <button className="btn-primary mt-4 absolute center-0 bottom-0">
+              Ver más
+            </button>
+            {/* Botón "Ver más" */}
           </div>
           <Login />
         </div>
