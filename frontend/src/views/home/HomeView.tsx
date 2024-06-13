@@ -36,11 +36,10 @@ export default function HomeView() {
     },
   ];
 
-  const images = [personaImage, restauranteImage]; // Crea un array con las imágenes
   return (
     <main>
-      <div className="flex flex-col gap-20 w-screen relative">
-        <div className="flex justify-between h-screen w-screen px-20 pt-20 relative z-10">
+      <div className="flex flex-col gap-20 w-screen items-center relative">
+        <div className="flex gap-6 justify-between h-screen w-screen px-20 pt-20 relative z-10 container">
           <div className="flex flex-col gap-20">
             <div className="flex flex-col gap-5">
               <span className="text-5xl font-semibold text-white">

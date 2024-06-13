@@ -9,10 +9,18 @@ import CountrySelect from './CountrySelect';
 
 export default function Login() {
   // TODO: Form con FORMIK y validaciones con Yup
+  // TODO: Alternativamente, mover el formulario a un componente separado
 
-  const [isShowing, setIsShowing] = useState(true);
+  const [isPasswordShowing, setIsPasswordShowing] = useState(true);
+  const [isConfirmPasswordShowing, setIsConfirmPasswordShowing] =
+    useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(countries[46]);
+  const [isLogin, setIsLogin] = useState(true);
+
+  const handleIsLogin = () => {
+    setIsLogin(!isLogin);
+  };
 
   return (
     <>
@@ -21,11 +29,21 @@ export default function Login() {
           Inicio de sesión
         </span>
         <div className="flex text-gray-500 tracking-tighter text-sm gap-10 underline underline-offset-[10px] ">
-          <button className="hover:underline underline-offset-[10px] hover:decoration-orange-500 hover:decoration-2">
+          <button
+            className={`hover:underline underline-offset-[10px] hover:decoration-orange-500 hover:decoration-2 ${
+              isLogin ? 'underline decoration-orange-500 text-gray-800' : ''
+            } `}
+            onClick={() => setIsLogin(true)}
+          >
             Iniciar sesión con cuenta
           </button>
-          <button className="hover:underline underline-offset-[10px] hover:decoration-orange-500 hover:decoration-2">
-            Iniciar sesión con el código de verificación
+          <button
+            className={`hover:underline underline-offset-[10px] hover:decoration-orange-500 hover:decoration-2 ${
+              !isLogin ? 'underline decoration-orange-500 text-gray-800' : ''
+            } `}
+            onClick={() => setIsLogin(false)}
+          >
+            Regístrate
           </button>
         </div>
         <form
@@ -48,35 +66,86 @@ export default function Login() {
             </div>
             <div className="flex items-center relative">
               <input
-                type={!isShowing ? 'password' : 'text'}
+                type={!isPasswordShowing ? 'password' : 'text'}
                 className="bg-gray-100 w-full focus:outline-none text-xs placeholder:text-gray-500 border-b focus:border-b-[--foreground] transition-colors duration-200 px-4"
                 placeholder="Contraseña"
               />
-              {isShowing ? (
+              {isPasswordShowing ? (
                 <GoEye
                   onClick={() => {
-                    setIsShowing(!isShowing);
+                    setIsPasswordShowing(!isPasswordShowing);
                   }}
                   className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
                 />
               ) : (
                 <GoEyeClosed
                   onClick={() => {
-                    setIsShowing(!isShowing);
+                    setIsPasswordShowing(!isPasswordShowing);
                   }}
                   className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
                 />
               )}
             </div>
-            <div className="flex gap-1 items-center">
-              <input type="checkbox" className="w-[15px]" />
-              <span className="text-xs text-gray-400">Acepto</span>
-              <Link href="/terms" className="text-xs text-blue-600 underline">
-                Términos de uso y política de privacidad
-              </Link>
-            </div>
+
+            {!isLogin && (
+              <div className="flex items-center relative">
+                <input
+                  type={!isConfirmPasswordShowing ? 'password' : 'text'}
+                  className="bg-gray-100 w-full focus:outline-none text-xs placeholder:text-gray-500 border-b focus:border-b-[--foreground] transition-colors duration-200 px-4"
+                  placeholder="Confirma tu contraseña"
+                />
+                {isConfirmPasswordShowing ? (
+                  <GoEye
+                    onClick={() => {
+                      setIsConfirmPasswordShowing(!isConfirmPasswordShowing);
+                    }}
+                    className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
+                  />
+                ) : (
+                  <GoEyeClosed
+                    onClick={() => {
+                      setIsConfirmPasswordShowing(!isConfirmPasswordShowing);
+                    }}
+                    className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
+                  />
+                )}
+              </div>
+            )}
+
+            {!isLogin && (
+              <div className="flex gap-1 items-center">
+                <input type="checkbox" className="w-[15px]" />
+                <span className="text-xs text-gray-400">Acepto</span>
+                <Link
+                  href="/terms-of-service"
+                  className="text-xs text-blue-600 underline"
+                >
+                  Términos de uso y política de privacidad
+                </Link>
+              </div>
+            )}
           </div>
-          <button className="btn-primary">Iniciar sesión</button>
+          <div className="flex flex-col gap-3">
+            <div className="px-5">
+              {isLogin ? (
+                <span className="text-xs text-gray-400">
+                  ¿No tienes cuenta?{' '}
+                </span>
+              ) : (
+                <span className="text-xs text-gray-400">
+                  ¿Ya tienes cuenta?{' '}
+                </span>
+              )}
+              <button
+                type="button"
+                className="text-xs text-orange-500 underline italic"
+                onClick={handleIsLogin}
+              >
+                {isLogin ? 'Regístrate' : 'Inicia sesión'}
+              </button>
+            </div>
+            <button className="btn-primary">Iniciar sesión</button>
+          </div>
         </form>
       </div>
     </>
