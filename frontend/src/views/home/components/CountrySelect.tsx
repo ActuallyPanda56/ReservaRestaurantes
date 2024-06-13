@@ -7,11 +7,18 @@ import { countries, Country } from '@/components/constants/country';
 const CountrySelect = ({
   isOpen,
   setIsOpen,
-  selectedCountry,
-  setSelectedCountry,
+  formik,
+  handleCountryChange,
 }: any) => {
+  const [selectedCountry, setSelectedCountry] = useState(
+    countries.find((country) => country.isoCode === formik.values.isoCode) ||
+      countries[0]
+  );
+
   const handleSelectCountry = (country: Country) => {
     setSelectedCountry(country);
+    formik.setFieldValue('country', country.isoCode);
+    handleCountryChange({ target: { value: country.isoCode } });
     setIsOpen(false);
   };
   // Creamos una referencia para cada país
@@ -56,9 +63,9 @@ const CountrySelect = ({
       <button
         type="button"
         onClick={() => {
-          if (!isOpen) setIsOpen(true);
+          setIsOpen(!isOpen);
         }}
-        className="w-40 bg-gray-100 p-2 rounded-md flex items-center justify-between text-sm"
+        className="w-56 bg-gray-100 p-2 rounded-md flex items-center justify-between text-sm"
       >
         <div className="flex items-center gap-3">
           {
@@ -77,7 +84,7 @@ const CountrySelect = ({
 
       {
         <div
-          className={`absolute top-44 left-12 w-[400px] border-b border-r border-l bg-white mt-1 rounded-md max-h-[400px] z-30 overflow-scroll transition-all ${
+          className={`absolute top-9 left-0 w-[400px] border-b border-r border-l bg-white mt-1 rounded-md max-h-[400px] z-30 overflow-scroll transition-all ${
             isOpen
               ? 'opacity-100 transform translate-y-0'
               : 'opacity-0 scale-90 transform -translate-y-5 -translate-x-5'

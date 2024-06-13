@@ -6,16 +6,14 @@ import { GoEye, GoEyeClosed } from 'react-icons/go';
 import Link from 'next/link';
 import { countries } from '@/components/constants/country';
 import CountrySelect from './CountrySelect';
+import { Field, FormikProvider } from 'formik';
+import useRegisterForm from '../hooks/useRegisterForm';
+import { FaWhatsapp } from 'react-icons/fa';
+import { MdSms } from 'react-icons/md';
+import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 
 export default function Login() {
-  // TODO: Form con FORMIK y validaciones con Yup
-  // TODO: Alternativamente, mover el formulario a un componente separado
-
-  const [isPasswordShowing, setIsPasswordShowing] = useState(true);
-  const [isConfirmPasswordShowing, setIsConfirmPasswordShowing] =
-    useState(true);
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(countries[46]);
   const [isLogin, setIsLogin] = useState(true);
 
   const handleIsLogin = () => {
@@ -35,7 +33,7 @@ export default function Login() {
             } `}
             onClick={() => setIsLogin(true)}
           >
-            Iniciar sesión con cuenta
+            Inicia sesión con tu cuenta
           </button>
           <button
             className={`hover:underline underline-offset-[10px] hover:decoration-orange-500 hover:decoration-2 ${
@@ -46,7 +44,27 @@ export default function Login() {
             Regístrate
           </button>
         </div>
-        <form
+        <div className="flex flex-col w-full h-full justify-between">
+          {isLogin ? <LoginForm /> : <RegisterForm />}
+          <div className="flex gap-3 text-xs justify-center">
+            <button className="text-gray-600 hover:underline">
+              ¿Olvidate tu contraseña?
+            </button>
+            <span className="text-gray-400">|</span>
+            <div className="flex gap-1 items-center">
+              <span className="text-gray-600">
+                {isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
+              </span>
+              <button
+                onClick={handleIsLogin}
+                className="text-orange-500 hover:underline"
+              >
+                {isLogin ? 'Regístrate' : 'Inicia sesión'}
+              </button>
+            </div>
+          </div>
+        </div>
+        {/*  <form
           action=""
           className="flex flex-col justify-between px-4 pt-5 h-full"
         >
@@ -146,7 +164,7 @@ export default function Login() {
             </div>
             <button className="btn-primary">Iniciar sesión</button>
           </div>
-        </form>
+        </form> */}
       </div>
     </>
   );

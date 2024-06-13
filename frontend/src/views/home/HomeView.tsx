@@ -5,7 +5,7 @@ import Carousel from '@/components/common/Carousel';
 import personaImage from '@/image/cui.jpg';
 import restauranteImage from '@/image/cuychiquito.jpg';
 
-import Login from './components/Login';
+import Login from './components/LoginCard';
 import { Restaurant } from '@/components/constants/interfaces';
 
 export default function HomeView() {
