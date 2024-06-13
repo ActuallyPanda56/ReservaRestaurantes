@@ -1,15 +1,15 @@
 // User table schema
 const user = `CREATE TABLE User (
   id VARCHAR(36) NOT NULL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  last_name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) ,
+  last_name VARCHAR(255) ,
   email VARCHAR(255) NOT NULL,
   phone_number VARCHAR(255) NOT NULL,
-  identification VARCHAR(255) NOT NULL,
-  birth_date DATE NOT NULL,
+  identification VARCHAR(255) ,
+  birth_date DATE ,
   password VARCHAR(255) NOT NULL,
   profile_picture VARCHAR(255),
-  address VARCHAR(255) NOT NULL
+  address VARCHAR(255) 
 );`;
 
 // Restaurant table schema
