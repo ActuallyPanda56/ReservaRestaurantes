@@ -1,58 +1,74 @@
 'use client';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { FaCaretRight } from 'react-icons/fa';
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+import { Restaurant } from '../constants/interfaces';
 
 export default function Carousel({
-  images,
+  restaurants,
 }: {
-  images: string[] | StaticImageData[];
+  restaurants: Restaurant[];
 }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const goToNextSlide = () => {
-    currentImageIndex === images.length - 1
-      ? setCurrentImageIndex(0)
-      : setCurrentImageIndex(currentImageIndex + 1);
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === restaurants.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   const goToPrevSlide = () => {
-    currentImageIndex === 0
-      ? setCurrentImageIndex(images.length - 1)
-      : setCurrentImageIndex(currentImageIndex - 1);
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? restaurants.length - 1 : prevIndex - 1
+    );
   };
 
-  // Utiliza useEffect para cambiar las imágenes automáticamente cada 4 segundos
+  // Automatically change images every 10 seconds
   useEffect(() => {
-    const interval = setInterval(goToNextSlide, 4000);
+    const interval = setInterval(goToNextSlide, 10000);
     return () => {
       clearInterval(interval);
-    }; // Limpia el intervalo cuando el componente se desmonta
+    }; // Clear interval when component unmounts
   }, [currentImageIndex]);
 
   return (
-    <>
-      <div className="relative w-full flex flex-col items-center">
-        {/* Centra la imagen y ajusta el tamaño */}
-        <div className="h-[450px] w-full">
-          {/* Tamaño más pequeño */}
-          <Image
-            src={images[currentImageIndex]}
-            alt="Slide"
-            className="object-cover w-full h-full"
-          />
-        </div>
-        <button
-          className="absolute top-1/2 transform -translate-y-1/2 left-2 bg-orange-400 p-2 rounded-full"
-          onClick={goToPrevSlide}
+    <div className="relative w-full max-w-[800px] flex flex-col items-center">
+      <div className="overflow-hidden w-full h-[450px]">
+        <div
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
         >
-          {'<'}
-        </button>
-        <FaCaretRight
-          className="absolute top-1/2 transform -translate-y-1/2 right-2 bg-orange-400 text-2xl rounded-full"
-          onClick={goToNextSlide}
-        />
+          {restaurants.map((restaurant, index) => (
+            <div
+              key={index}
+              className="flex w-full shrink-0 items-center"
+              style={{ minWidth: '100%' }}
+            >
+              <Image
+                src={restaurant.image}
+                alt="Slide"
+                className="object-cover w-1/2 h-full"
+              />
+              <div className="w-1/2 h-full flex flex-col gap-5 items-center pt-10 px-10 bg-[--foreground] text-white">
+                <span className="text-2xl">{restaurant.title}</span>
+                <span className="italic ">{restaurant.description}</span>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </>
+      <button
+        className="absolute top-1/2 transform -translate-y-1/2 left-2 bg-orange-400 text-white flex justify-center rounded-full text-3xl"
+        onClick={goToPrevSlide}
+      >
+        <FaAngleLeft />
+      </button>
+      <button
+        className="absolute top-1/2 transform -translate-y-1/2 right-2 bg-orange-400 flex text-white justify-center rounded-full text-3xl"
+        onClick={goToNextSlide}
+      >
+        <FaAngleRight />
+      </button>
+    </div>
   );
 }

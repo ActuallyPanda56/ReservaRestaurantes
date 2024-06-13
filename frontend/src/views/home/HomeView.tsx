@@ -1,13 +1,41 @@
 import React from 'react';
 import { GoLocation } from 'react-icons/go';
 
-import Carousel from '@/components/common/Carousel.tsx';
+import Carousel from '@/components/common/Carousel';
 import personaImage from '@/image/cui.jpg';
 import restauranteImage from '@/image/cuychiquito.jpg';
 
 import Login from './components/Login';
+import { Restaurant } from '@/components/constants/interfaces';
 
 export default function HomeView() {
+  const restaurants: Restaurant[] = [
+    {
+      title: 'Cuy Chiquito',
+      description:
+        'El mejor cuy de la ciudad para ti y tu familia en Cuy Chiquito Restaurant & Bar. Disfruta de una experiencia gastronómica única con nuestro cuy preparado a la perfección, acompañado de guarniciones frescas y bebidas selectas. Nuestro ambiente acogedor y servicio excepcional harán que tu visita sea inolvidable.',
+      image: restauranteImage,
+    },
+    {
+      title: 'Cuy Grande',
+      description:
+        'El cuy más grande de la ciudad para ti y tu familia en Cuy Chiquito Restaurant & Bar. Nuestro cuy grande es ideal para compartir en reuniones familiares o con amigos, ofreciendo una carne jugosa y tierna que deleitará a todos los comensales. Ven y vive una fiesta de sabores en un entorno agradable y familiar.',
+      image: personaImage,
+    },
+    {
+      title: 'Cuy Mediano',
+      description:
+        'El cuy mediano de la ciudad para ti y tu familia en Cuy Chiquito Restaurant & Bar. Perfecto para una cena íntima o una comida casual, nuestro cuy mediano está sazonado con especias locales y cocinado a la perfección. Acompaña tu plato con nuestras exclusivas bebidas artesanales para una experiencia completa.',
+      image: restauranteImage,
+    },
+    {
+      title: 'Cuy Pequeño',
+      description:
+        'El cuy más pequeño de la ciudad para ti y tu familia en Cuy Chiquito Restaurant & Bar. No dejes que su tamaño te engañe; nuestro cuy pequeño está lleno de sabor y es ideal para quienes desean probar algo delicioso pero ligero. Disfruta de un servicio rápido y amable en un ambiente relajado y acogedor.',
+      image: personaImage,
+    },
+  ];
+
   const images = [personaImage, restauranteImage]; // Crea un array con las imágenes
   return (
     <main>
@@ -28,7 +56,7 @@ export default function HomeView() {
                 <button className="btn-primary mx-2">Enviar</button>
               </form>
             </div>
-            <Carousel images={images} />
+            <Carousel restaurants={restaurants} />
             <button className="btn-primary mt-4 absolute center-0 bottom-0">
               Ver más
             </button>
