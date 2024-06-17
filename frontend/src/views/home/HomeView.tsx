@@ -5,8 +5,8 @@ import Carousel from '@/components/common/Carousel';
 import personaImage from '@/image/cui.jpg';
 import restauranteImage from '@/image/cuychiquito.jpg';
 
-import Login from './components/LoginCard';
 import { Restaurant } from '@/components/constants/interfaces';
+import LoginCard from './components/LoginCard';
 
 export default function HomeView() {
   const restaurants: Restaurant[] = [
@@ -61,7 +61,7 @@ export default function HomeView() {
             </button>
             {/* Botón "Ver más" */}
           </div>
-          <Login />
+          <LoginCard />
         </div>
         <div className="w-screen h-[320px] absolute top-0 left-0 bg-[--foreground] -z-10" />
       </div>
