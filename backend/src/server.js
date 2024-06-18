@@ -5,7 +5,12 @@ const cors = require("cors");
 const v1 = require("./web/modules/v1/router");
 
 const app = express();
-app.use(cors());
+
+const corsOptions = {
+  credentials: true, // Allow credentials
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 db.getConnection((err, connection) => {
