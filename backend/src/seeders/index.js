@@ -3,8 +3,9 @@ const restaurants = require("./restaurantSeeder");
 const reviews = require("./reviewSeeder");
 
 const mysql = require("mysql");
+const bcrypt = require('bcrypt');
 
-function seedDatabase() {
+async function seedDatabase() {
   const db = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -12,29 +13,13 @@ function seedDatabase() {
     database: "curd",
   });
 
-/*   // Extract all user IDs from the reviews
-  const reviewUserIds = reviews.map((review) => review.user_id);
+  await db.connect();
 
-  // Extract all user IDs from the users
-  const userIds = users.map((user) => user.id);
+  // Insertar usuarios
+  for (const user of users) {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
-  // Extract all restaurant IDs from the reviews
-  const reviewRestaurantIds = reviews.map((review) => review.restaurant_id);
-
-  // Extract all restaurant IDs from the restaurants
-  const restaurantIds = restaurants.map((restaurant) => restaurant.id);
-
-  // Find user IDs in reviews that don't exist in users
-  const nonExistentUserIds = reviewUserIds.filter(
-    (userId) => !userIds.includes(userId)
-  );
-
-  if (nonExistentUserIds.length > 0) {
-    console.log("Non-existent user IDs:", nonExistentUserIds);
-    process.exit();
-  } */
-
-  users.map((user) => {
     const sql = `INSERT INTO User (id, name, last_name, email, phone_number, identification, birth_date, password, profile_picture, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     db.query(
       sql,
@@ -46,7 +31,7 @@ function seedDatabase() {
         user.phone_number,
         user.identification,
         user.birth_date,
-        user.password,
+        hashedPassword,  // Almacenamos la contraseña hasheada
         user.profile_picture,
         user.address,
       ],
@@ -56,10 +41,11 @@ function seedDatabase() {
         }
       }
     );
-  });
+  }
   console.log("Users inserted");
 
-  restaurants.map((restaurant) => {
+  // Insertar restaurantes
+  for (const restaurant of restaurants) {
     const sql = `INSERT INTO Restaurant (id, user_id, name, description, banner, pictures, menu, type, address, rating, capacity, age_restricted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     db.query(
       sql,
@@ -83,10 +69,11 @@ function seedDatabase() {
         }
       }
     );
-  });
+  }
   console.log("Restaurants inserted");
 
-  reviews.map((review) => {
+  // Insertar reseñas
+  for (const review of reviews) {
     const sql = `INSERT INTO Review (id, user_id, restaurant_id, rating, title, description) VALUES (?, ?, ?, ?, ?, ?)`;
     db.query(
       sql,
@@ -104,7 +91,7 @@ function seedDatabase() {
         }
       }
     );
-  });
+  }
   console.log("Reviews inserted");
 
   db.end(() => {
