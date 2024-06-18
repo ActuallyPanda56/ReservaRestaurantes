@@ -17,7 +17,7 @@ const useRegisterForm = () => {
   const initialValues = {
     email: '',
     isoCode: 'CO',
-    name: 'Colombia',
+    name: '',
     phoneCode: '+57',
     phoneNumber: '',
     password: '',
@@ -63,6 +63,7 @@ const useRegisterForm = () => {
         .post('http://localhost:8081/v1/auth/register', {
           email,
           password,
+          phoneNumber,
         })
         .then((res) => {
           console.log(res);

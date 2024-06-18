@@ -15,9 +15,10 @@ export default function LoginView() {
       .post('http://localhost:8081/v1/auth/login', { email, password })
       .then((res) => {
         console.log(res);
-        alert(res.data); // Muestra la respuesta del servidor
-        if (res.data === 'Usuario reconocido') {
-          router.push('/home'); // Redirige a la página en blanco
+        const message = res.data; // Obtén el mensaje de respuesta del servidor
+        alert(message); // Muestra el mensaje al usuario
+        if (message === 'Usuario reconocido') {
+          router.push('/home'); // Redirige a la página en blanco si el usuario es reconocido
         }
       })
       .catch((err) => {
