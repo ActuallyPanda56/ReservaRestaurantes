@@ -6,6 +6,7 @@ interface RegisterData {
   email: string;
   isoCode: string;
   name: string;
+  lastName: string;
   phoneCode: string;
   phoneNumber: string;
   password: string;
@@ -18,6 +19,7 @@ const useRegisterForm = () => {
     email: '',
     isoCode: 'CO',
     name: '',
+    lastName: '',
     phoneCode: '+57',
     phoneNumber: '',
     password: '',
@@ -34,6 +36,8 @@ const useRegisterForm = () => {
       .required('ISO Code is required'),
     name: Yup.string()
       .required('Name is required'),
+    lastName: Yup.string()
+      .required('Last Name is required'),
     phoneCode: Yup.string()
       .required('Phone Code is required'),
     phoneNumber: Yup.string()
@@ -57,11 +61,14 @@ const useRegisterForm = () => {
   });
 
   const handleSubmit = async (data: RegisterData) => {
-    const { email, password, phoneNumber } = data;
+    const { email, name, lastName, password, phoneNumber } = data;
+    console.log(data);
     try {
       axios
         .post('http://localhost:8081/v1/auth/register', {
           email,
+          name,
+          lastName,
           password,
           phoneNumber,
         })

@@ -13,7 +13,7 @@ export default function LoginCard() {
 
   return (
     <>
-      <div className="flex flex-col bg-white rounded-lg max-h-[600px] w-[600px] p-8 gap-4 shadow-2xl shadow-[--shadow] relative z-20">
+      <div className="flex flex-col bg-white rounded-lg h-[750px] w-[500px] p-8 gap-4 shadow-2xl shadow-[--shadow] relative">
         <span className="tracking-tighter text-3xl font-light">
           Inicio de sesión
         </span>

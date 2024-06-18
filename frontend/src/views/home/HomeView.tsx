@@ -6,7 +6,10 @@ import personaImage from '@/image/cui.jpg';
 import restauranteImage from '@/image/cuychiquito.jpg';
 
 import { Restaurant } from '@/components/constants/interfaces';
-import LoginCard from './components/LoginCard';
+import Navbar from './components/Navbar';
+import Reservation from './components/Reservation';
+import Image from 'next/image';
+import Footer from './components/Footer';
 
 export default function HomeView() {
   const restaurants: Restaurant[] = [
@@ -38,33 +41,90 @@ export default function HomeView() {
 
   return (
     <main>
-      <div className="flex flex-col gap-20 w-screen items-center relative">
-        <div className="flex gap-6 justify-between h-screen w-screen px-20 pt-20 relative z-10 container">
-          <div className="flex flex-col gap-20">
-            <div className="flex flex-col gap-5">
-              <span className="text-5xl font-semibold text-white">
-                Busca los restaurantes que estén a tu alrededor
-              </span>
-              <form className="flex items-center w-[600px] gap-2 px-2 bg-white rounded shadow-lg shadow-[--shadow]">
-                <GoLocation className="text-2xl mx-2" />
-                <input
-                  type="text"
-                  placeholder="Ingresa la dirección de tu casa"
-                  className="py-4"
-                />
-                <button className="btn-primary mx-2">Enviar</button>
-              </form>
-            </div>
-            <Carousel restaurants={restaurants} />
-            <button className="btn-primary mt-4 absolute center-0 bottom-0">
-              Ver más
-            </button>
-            {/* Botón "Ver más" */}
+      <div className="flex flex-col justify-center items-center gap-1 ">
+        <Navbar />
+        <Carousel restaurants={restaurants} />
+        <div className="w-[1200px] flex flex-col justify-center items-center gap-10">
+          <div className="mt-5">
+            <Reservation />
           </div>
-          <LoginCard />
+          <div className="grid grid-cols-3 gap-10 w-[1400px] mt-20">
+            <div className="row-span-2 relative flex justify-center hover:scale-105 transition-all cursor-pointer">
+              <Image
+                src={restaurants[0].image}
+                alt={restaurants[0].title}
+                width={400}
+                height={400}
+                className="object-cover h-full w-full rounded-lg"
+              />
+              <span className="text-xl text-white font-bold absolute bottom-10">
+                {restaurants[0].title}
+              </span>
+            </div>
+            {restaurants.slice(1, 4).map((restaurant, index) => (
+              <div
+                key={index}
+                className="relative flex justify-center hover:scale-105 transition-all cursor-pointer"
+              >
+                <Image
+                  src={restaurant.image}
+                  alt={restaurant.title}
+                  width={400}
+                  height={400}
+                  className="object-cover h-full w-full aspect-square rounded-lg"
+                />
+                <span className="text-xl text-white font-bold absolute bottom-10">
+                  {restaurant.title}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col gap-3 mt-6 w-full px-20">
+            <h3 className="text-[--foreground] text-xl">Special Offers</h3>
+            <div className="flex justify-between w-full">
+              <span className="text-5xl font-semibold">
+                Best offers of the month
+              </span>
+              <button className="btn-primary">View all</button>
+            </div>
+            <div className="flex flex-col ">
+              <p className="max-w-[600px]">
+                Experience fantastic benefits and obtain better rates when you
+                make a direct booking on our official website.
+              </p>
+            </div>
+          </div>
+          <div className="flex justify-center gap-6 px-20 ">
+            {restaurants.slice(0, 3).map((restaurant) => (
+              <div
+                key={restaurant.title}
+                className="flex flex-col gap-3 p-5 rounded-lg shadow-md w-[300px] h-[600px] relative cursor-pointer hover:scale-105 transition-all"
+              >
+                <Image
+                  src={restaurant.image}
+                  alt={restaurant.title}
+                  width={300}
+                  height={300}
+                  className="object-cover h-[200px] w-full rounded-lg"
+                />
+                <div className="flex flex-col gap-2 h-[280px] overflow-hidden ">
+                  <span className="text-xl font-semibold">
+                    {restaurant.title}
+                  </span>
+                  <span className="text-gray-600">
+                    {restaurant.description}
+                  </span>
+                  <div className="flex items-center gap-2 absolute bottom-4 right-4">
+                    <GoLocation />
+                    <span>Location</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="w-screen h-[320px] absolute top-0 left-0 bg-[--foreground] -z-10" />
       </div>
+      <Footer />
     </main>
   );
 }

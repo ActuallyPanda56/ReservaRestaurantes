@@ -1,74 +1,63 @@
 'use client';
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+
+import React from 'react';
+import Slider from 'react-slick';
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { Restaurant } from '../constants/interfaces';
+import Image from 'next/image';
 
 export default function Carousel({
-  restaurants,
+  restaurants = [],
 }: {
   restaurants: Restaurant[];
 }) {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const goToNextSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === restaurants.length - 1 ? 0 : prevIndex + 1
+  function SampleNextArrow(props: any) {
+    const { style, onClick } = props;
+    return (
+      <div
+        className="absolute top-1/2 right-8 bg-orange-400 text-2xl rounded-full z-50 h-10 w-10 flex justify-center items-center cursor-pointer"
+        style={{ ...style, display: 'block' }}
+        onClick={onClick}
+      />
     );
-  };
+  }
 
-  const goToPrevSlide = () => {
-    setCurrentImageIndex((prevIndex) =>
-      prevIndex === 0 ? restaurants.length - 1 : prevIndex - 1
+  function SamplePrevArrow(props: any) {
+    const { style, onClick } = props;
+    return (
+      <div
+        className="absolute top-1/2  left-8 bg-orange-400 p-2 rounded-full z-50 h-10 w-10 flex justify-center items-center cursor-pointer"
+        style={{ ...style, display: 'block' }}
+        onClick={onClick}
+      />
     );
+  }
+
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
   };
-
-  // Automatically change images every 10 seconds
-  useEffect(() => {
-    const interval = setInterval(goToNextSlide, 10000);
-    return () => {
-      clearInterval(interval);
-    }; // Clear interval when component unmounts
-  }, [currentImageIndex]);
-
   return (
-    <div className="relative w-full max-w-[800px] flex flex-col items-center">
-      <div className="overflow-hidden w-full h-[450px]">
-        <div
-          className="flex transition-transform duration-500 ease-in-out"
-          style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
-        >
-          {restaurants.map((restaurant, index) => (
-            <div
-              key={index}
-              className="flex w-full shrink-0 items-center"
-              style={{ minWidth: '100%' }}
-            >
-              <Image
-                src={restaurant.image}
-                alt="Slide"
-                className="object-cover w-1/2 h-full"
-              />
-              <div className="w-1/2 h-full flex flex-col gap-5 items-center pt-10 px-10 bg-[--foreground] text-white">
-                <span className="text-2xl">{restaurant.title}</span>
-                <span className="italic ">{restaurant.description}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <button
-        className="absolute top-1/2 transform -translate-y-1/2 left-2 bg-orange-400 text-white flex justify-center rounded-full text-3xl"
-        onClick={goToPrevSlide}
-      >
-        <FaAngleLeft />
-      </button>
-      <button
-        className="absolute top-1/2 transform -translate-y-1/2 right-2 bg-orange-400 flex text-white justify-center rounded-full text-3xl"
-        onClick={goToNextSlide}
-      >
-        <FaAngleRight />
-      </button>
+    <div className="w-screen h-[800px] relative">
+      <Slider {...settings}>
+        {restaurants.map((restaurant) => (
+          <Image
+            src={restaurant.image}
+            alt={restaurant.title}
+            width={400}
+            height={400}
+            key={restaurant.title}
+            className="object-cover h-[750px] w-full"
+          />
+        ))}
+      </Slider>
     </div>
   );
 }

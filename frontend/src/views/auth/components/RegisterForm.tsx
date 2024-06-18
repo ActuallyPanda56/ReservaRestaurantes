@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Field, FormikProvider, ErrorMessage } from 'formik';
-import CountrySelect from './CountrySelect';
+import CountrySelect from '@/components/common/CountrySelect';
 import { GoEye, GoEyeClosed } from 'react-icons/go';
 import { countries } from '@/components/constants/country';
 import useRegisterForm from '../hooks/useRegisterForm';
@@ -24,7 +24,8 @@ export default function RegisterForm() {
     formik.setValues({
       email: formik.values.email,
       isoCode: selectedCountry?.isoCode ?? 'CO',
-      name: selectedCountry?.name ?? 'Colombia',
+      name: formik.values.name,
+      lastName: formik.values.lastName,
       phoneCode: selectedCountry?.phoneCode ?? '+57',
       phoneNumber: formik.values.phoneNumber,
       password: formik.values.password,
@@ -53,6 +54,44 @@ export default function RegisterForm() {
             {touched.email && errors.email && (
               <div className="text-red-500 text-xs mt-1">{errors.email}</div>
             )}
+          </div>
+          <div className="flex gap-2">
+            <div className="flex flex-col">
+              <div
+                className={`flex relative items-center gap-2 px-2 border-b transition-all ${
+                  formik.values.name !== '' ? 'border-[--foreground]' : ''
+                }`}
+              >
+                <Field
+                  name="name"
+                  type="text"
+                  placeholder="Nombres"
+                  className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
+                ></Field>
+              </div>
+              {touched.name && errors.name && (
+                <div className="text-red-500 text-xs mt-1">{errors.name}</div>
+              )}
+            </div>
+            <div className="flex flex-col">
+              <div
+                className={`flex relative items-center gap-2 px-2 border-b transition-all ${
+                  formik.values.lastName !== '' ? 'border-[--foreground]' : ''
+                }`}
+              >
+                <Field
+                  name="lastName"
+                  type="text"
+                  placeholder="Apellidos"
+                  className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
+                ></Field>
+              </div>
+              {touched.lastName && errors.lastName && (
+                <div className="text-red-500 text-xs mt-1">
+                  {errors.lastName}
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex flex-col">
             <div
@@ -166,7 +205,7 @@ export default function RegisterForm() {
           </div>
         </div>
         <button
-          type="button"
+          type="submit"
           onClick={submitForm}
           className="btn-primary mt-10"
         >
