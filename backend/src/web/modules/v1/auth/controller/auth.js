@@ -32,10 +32,10 @@ const login = (req, res) => {
 }
 
 const register = (req, res) => {
-  const { name, last_name, email, password } = req.body;
+  const { email, name, lastName, phoneNumber, password } = req.body;
 
   // Verificar que se proporcionen todos los campos necesarios
-  if (!name || !last_name || !email || !password) {
+  if (!name || !phoneNumber || !name || !lastName || !email || !password) {
     return res.status(400).json({ message: 'Por favor, proporcione todos los campos requeridos' });
   }
 
@@ -47,8 +47,8 @@ const register = (req, res) => {
     }
 
     // Insertar usuario con contraseña encriptada en la base de datos
-    const sql = "INSERT INTO user (name, last_name, email, password) VALUES (?, ?, ?, ?)";
-    db.query(sql, [name, last_name, email, hashedPassword], (error, result) => {
+    const sql = "INSERT INTO user (name, last_name, email, phone_number, password) VALUES (?, ?, ?, ?, ?)";
+    db.query(sql, [name, lastName, email, phoneNumber, hashedPassword], (error, result) => {
       if (error) {
         console.error("Error executing query:", error);
         return res.status(500).json({ message: 'Error en el servidor' });
