@@ -35,10 +35,9 @@ const useLoginForm = () => {
       axios
         .post('http://localhost:8081/v1/auth/login', { email, password })
         .then((res) => {
-          console.log(res);
-          alert(res.data); // Show the server response
-          if (res.data === 'Usuario reconocido') {
+          if (res.status === 200) {
             alert("Inicio de sesión Correcto. Implementar backend"); // Redirect to the desired page
+            console.log(res.data)
           }
         })
         .catch((err) => {
