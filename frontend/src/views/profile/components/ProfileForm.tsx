@@ -18,11 +18,14 @@ export default function ProfileForm({ userData }: any) {
     setValues(userData);
   }, [userData]);
 
+  // TODO: User MUST be reauthenticated after changing email and before changing password
+  // TODO: Logout functionallity
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
       <div className="flex gap-10">
         <div className="flex flex-col gap-1 pl-20 w-full">
-          <span className="text-xl font-bold">Name</span>
+          <span className="text-xl font-bold">Nombre</span>
           <div
             className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
               values.name !== userData.name
@@ -33,7 +36,7 @@ export default function ProfileForm({ userData }: any) {
             <Field
               name="name"
               type="text"
-              className="w-full h-full focus:outline-none text-sm py-2"
+              className="w-full h-full focus:outline-none text- py-2"
             />
             {values.name !== userData.name && (
               <button
@@ -43,16 +46,16 @@ export default function ProfileForm({ userData }: any) {
                   setFieldValue('name', userData.name);
                 }}
               >
-                Reset
+                Restablecer
               </button>
             )}
           </div>
           {touched.name && errors.name ? (
-            <div className="text-red-600 text-sm">{String(errors.name)}</div>
+            <div className="text-red-600 text-">{String(errors.name)}</div>
           ) : null}
         </div>
         <div className="flex flex-col gap-1 pr-20 w-full">
-          <span className="text-xl font-bold">Last Name</span>
+          <span className="text-xl font-bold">Apellido</span>
           <div
             className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
               values.lastName !== userData.lastName
@@ -63,7 +66,7 @@ export default function ProfileForm({ userData }: any) {
             <Field
               name="lastName"
               type="text"
-              className="w-full h-full focus:outline-none text-sm py-2"
+              className="w-full h-full focus:outline-none text- py-2"
             />
             {values.lastName !== userData.lastName && (
               <button
@@ -73,19 +76,17 @@ export default function ProfileForm({ userData }: any) {
                   setFieldValue('lastName', userData.lastName);
                 }}
               >
-                Reset
+                Restablecer
               </button>
             )}
           </div>
           {touched.lastName && errors.lastName ? (
-            <div className="text-red-600 text-sm">
-              {String(errors.lastName)}
-            </div>
+            <div className="text-red-600 text-">{String(errors.lastName)}</div>
           ) : null}
         </div>
       </div>
       <div className="flex flex-col gap-1 px-20">
-        <span className="text-xl font-bold">Email</span>
+        <span className="text-xl font-bold">Correo Electrónico</span>
         <div
           className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
             values.email !== userData.email
@@ -96,7 +97,7 @@ export default function ProfileForm({ userData }: any) {
           <Field
             name="email"
             type="text"
-            className="w-full h-full focus:outline-none text-sm py-2"
+            className="w-full h-full focus:outline-none text- py-2"
           />
           {values.email !== userData.email && (
             <button
@@ -106,16 +107,16 @@ export default function ProfileForm({ userData }: any) {
                 setFieldValue('email', userData.email);
               }}
             >
-              Reset
+              Restablecer
             </button>
           )}
         </div>
         {touched.email && errors.email ? (
-          <div className="text-red-600 text-sm">{String(errors.email)}</div>
+          <div className="text-red-600 text-">{String(errors.email)}</div>
         ) : null}
       </div>
       <div className="flex flex-col gap-1 px-20">
-        <span className="text-xl font-bold">Phone Number</span>
+        <span className="text-xl font-bold">Número de teléfono</span>
         <div
           className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
             values.phoneNumber !== userData.phoneNumber
@@ -126,7 +127,7 @@ export default function ProfileForm({ userData }: any) {
           <Field
             name="phoneNumber"
             type="text"
-            className="w-full h-full focus:outline-none text-sm py-2"
+            className="w-full h-full focus:outline-none text- py-2"
           />
           {values.phoneNumber !== userData.phoneNumber && (
             <button
@@ -136,18 +137,16 @@ export default function ProfileForm({ userData }: any) {
                 setFieldValue('phoneNumber', userData.phoneNumber);
               }}
             >
-              Reset
+              Restablecer
             </button>
           )}
         </div>
         {touched.phoneNumber && errors.phoneNumber ? (
-          <div className="text-red-600 text-sm">
-            {String(errors.phoneNumber)}
-          </div>
+          <div className="text-red-600 text-">{String(errors.phoneNumber)}</div>
         ) : null}
       </div>
       <div className="flex flex-col gap-1 px-20">
-        <span className="text-xl font-bold">Identification</span>
+        <span className="text-xl font-bold">Identificación</span>
         <div
           className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
             values.identification !== userData.identification
@@ -158,7 +157,7 @@ export default function ProfileForm({ userData }: any) {
           <Field
             name="identification"
             type="text"
-            className="w-full h-full focus:outline-none text-sm py-2"
+            className="w-full h-full focus:outline-none text- py-2"
           />
           {values.identification !== userData.identification && (
             <button
@@ -168,18 +167,18 @@ export default function ProfileForm({ userData }: any) {
                 setFieldValue('identification', userData.identification);
               }}
             >
-              Reset
+              Restablecer
             </button>
           )}
         </div>
         {touched.identification && errors.identification ? (
-          <div className="text-red-600 text-sm">
+          <div className="text-red-600 text-">
             {String(errors.identification)}
           </div>
         ) : null}
       </div>
       <div className="flex flex-col gap-1 px-20">
-        <span className="text-xl font-bold">Birth Date</span>
+        <span className="text-xl font-bold">Fecha de nacimiento</span>
         <div
           className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
             values.birthDate !== userData.birthDate
@@ -190,7 +189,7 @@ export default function ProfileForm({ userData }: any) {
           <Field
             name="birthDate"
             type="date"
-            className="w-full h-full focus:outline-none text-sm py-2"
+            className="w-full h-full focus:outline-none text- py-2"
           />
           {values.birthDate !== userData.birthDate && (
             <button
@@ -200,16 +199,16 @@ export default function ProfileForm({ userData }: any) {
                 setFieldValue('birthDate', userData.birthDate);
               }}
             >
-              Reset
+              Restablecer
             </button>
           )}
         </div>
         {touched.birthDate && errors.birthDate ? (
-          <div className="text-red-600 text-sm">{String(errors.birthDate)}</div>
+          <div className="text-red-600 text-">{String(errors.birthDate)}</div>
         ) : null}
       </div>
       <div className="flex flex-col gap-1 px-20">
-        <span className="text-xl font-bold">Password</span>
+        <span className="text-xl font-bold">Contraseña</span>
         <div
           className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
             values.password !== userData.password
@@ -220,7 +219,7 @@ export default function ProfileForm({ userData }: any) {
           <Field
             name="password"
             type="password"
-            className="w-full h-full focus:outline-none text-sm py-2"
+            className="w-full h-full focus:outline-none text- py-2"
           />
           {values.password !== userData.password && (
             <button
@@ -230,16 +229,16 @@ export default function ProfileForm({ userData }: any) {
                 setFieldValue('password', userData.password);
               }}
             >
-              Reset
+              Restablecer
             </button>
           )}
         </div>
         {touched.password && errors.password ? (
-          <div className="text-red-600 text-sm">{String(errors.password)}</div>
+          <div className="text-red-600 text-">{String(errors.password)}</div>
         ) : null}
       </div>
       <div className="flex flex-col gap-1 px-20">
-        <span className="text-xl font-bold">Address</span>
+        <span className="text-xl font-bold">Dirección</span>
         <div
           className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
             values.address !== userData.address
@@ -250,7 +249,7 @@ export default function ProfileForm({ userData }: any) {
           <Field
             name="address"
             type="text"
-            className="w-full h-full focus:outline-none text-sm py-2"
+            className="w-full h-full focus:outline-none text- py-2"
           />
           {values.address !== userData.address && (
             <button
@@ -260,25 +259,34 @@ export default function ProfileForm({ userData }: any) {
                 setFieldValue('address', userData.address);
               }}
             >
-              Reset
+              Restablecer
             </button>
           )}
         </div>
         {touched.address && errors.address ? (
-          <div className="text-red-600 text-sm">{String(errors.address)}</div>
+          <div className="text-red-600 text-">{String(errors.address)}</div>
         ) : null}
       </div>
 
-      {values !== userData && (
-        <div className="flex justify-end px-20">
+      <div className="flex justify-between px-20">
+        <button className="btn-alert rounded-lg">Cerrar sesión</button>
+        {(values.name !== userData.name ||
+          values.lastName !== userData.lastName ||
+          values.email !== userData.email ||
+          values.phoneNumber !== userData.phoneNumber ||
+          values.identification !== userData.identification ||
+          values.birthDate !== userData.birthDate ||
+          values.password !== userData.password ||
+          values.address !== userData.address ||
+          values.profilePicture !== userData.profilePicture) && (
           <button
             type="submit"
             className="btn-primary px-10 py-2 text-white font-bold rounded-lg transition-all"
           >
-            Submit
+            Guardar cambios
           </button>
-        </div>
-      )}
+        )}
+      </div>
     </form>
   );
 }

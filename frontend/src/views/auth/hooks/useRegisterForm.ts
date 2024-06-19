@@ -73,15 +73,19 @@ const useRegisterForm = () => {
           phoneNumber,
         })
         .then((res) => {
-          console.log(res);
-          alert(res.data); // Show the server response
-          if (res.data === 'Usuario reconocido') {
-            alert("Registro Correcto. Implementar backend"); // Redirect to the desired page
+          if (res.status === 200) {
+            alert("Usuario creado exitosamente"); // Redirect to the desired page
+            formik.resetForm();
           }
         })
         .catch((err) => {
-          console.error('Error en la solicitud:', err);
+          if (err.response.data.code === 402) {
+            alert('El correo ya se encuentra registrado');
+          }
+          else {
+            console.error('Error en la solicitud:', err);
           alert('Error en la solicitud'); // Show an error message to the user
+          }
         });
     } catch (error) {
       alert('Error en la solicitud');

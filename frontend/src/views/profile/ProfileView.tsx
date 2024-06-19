@@ -14,9 +14,9 @@ export default function ProfileView() {
   return (
     <>
       <FormikProvider value={formik}>
-        <div className="flex flex-col my-40 mx-20 pr-20 gap-20 w-full">
-          <div className="w-full flex justify-between">
-            <h1 className="text-5xl font-bold">My Profile</h1>
+        <div className="flex flex-col my-20 mx-20 pr-20 gap-20 w-full">
+          <div className="w-full flex justify-between items-end">
+            <h1 className="text-5xl font-bold">Mi Perfil</h1>
             <ImageUploader
               name="profilePicture"
               label="foto de perfil"

@@ -17,3 +17,6 @@ export interface User {
   profilePicture: string;
   address: string;
 }
+export interface TableRow {
+  [key: string]: string;
+}

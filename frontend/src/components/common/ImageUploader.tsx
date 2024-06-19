@@ -183,9 +183,10 @@ export default function ImageUploader({
         >
           {selectOnImage && (
             <div
-              className={`w-full h-full bg-black bg-opacity-60 rounded-full absolute flex items-center justify-center ${
+              className={`w-full h-full bg-black bg-opacity-60 absolute flex items-center justify-center ${
                 !isHovering && 'hidden'
-              }`}
+              }
+              ${circularCrop && 'rounded-full'}`}
             >
               <span className="text-white text-sm">
                 Cambia tu foto de perfil

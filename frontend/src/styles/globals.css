@@ -62,8 +62,33 @@ a {
   text-decoration: none;
 }
 
+@layer utilities {
+  ::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: var(--primary);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--shadow);
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--foreground);
+  }
+}
+
 @layer components {
   .btn-primary {
     @apply py-2 px-5 bg-[#D8B16C] text-white font-semibold rounded-full shadow-md hover:bg-[#8B7357] focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
+  }
+  .btn-alert{
+    @apply py-2 px-5 bg-red-500 text-white font-semibold rounded-full shadow-md hover:bg-red-600 hover:scale-105 transition-all focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
   }
 }

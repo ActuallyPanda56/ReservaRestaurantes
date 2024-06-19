@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React, { useState } from 'react';
 import {
   FaArrowLeft,
@@ -18,10 +19,18 @@ export default function Sidebar() {
     <div className="fixed flex flex-col items-center justify-between w-[150px] h-screen bg-[--foreground] py-20 text-white">
       <div className="flex flex-col items-center gap-20">
         <span>LOGO</span>
-        <FaHouse className="text-3xl" />
-        <FaRegBell className="text-3xl" />
-        <FaCalendar className="text-3xl" />
-        <FaUser className="text-3xl" />
+        <Link href="/">
+          <FaHouse className="text-3xl" />
+        </Link>
+        <Link href="/profile/my-notifications">
+          <FaRegBell className="text-3xl" />
+        </Link>
+        <Link href="/profile/my-reservations">
+          <FaCalendar className="text-3xl" />
+        </Link>
+        <Link href="/profile">
+          <FaUser className="text-3xl" />
+        </Link>
       </div>
       <GiHelp
         className="text-6xl bg-[--shadow] rounded-full p-3 cursor-pointer"

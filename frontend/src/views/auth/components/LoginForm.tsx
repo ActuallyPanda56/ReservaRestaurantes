@@ -39,7 +39,7 @@ export default function LoginForm() {
               <Field
                 name="password"
                 type={!isPasswordShowing ? 'password' : 'text'}
-                placeholder="Contraseña"
+                placeholder="Password"
                 className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
               ></Field>
               {isPasswordShowing ? (
