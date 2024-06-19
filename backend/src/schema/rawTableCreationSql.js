@@ -3,7 +3,7 @@ const user = `CREATE TABLE User (
   id VARCHAR(36) NOT NULL PRIMARY KEY DEFAULT (UUID()),
   name VARCHAR(255),
   last_name VARCHAR(255),
-  email VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
   phone_number VARCHAR(255) NOT NULL,
   identification VARCHAR(255),
   birth_date DATE,
