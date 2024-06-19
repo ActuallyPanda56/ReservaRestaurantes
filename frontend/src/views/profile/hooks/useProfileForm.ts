@@ -1,5 +1,4 @@
 import { User } from '@/components/constants/interfaces';
-import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -14,6 +13,7 @@ const useProfileForm = () => {
     password: '',
     profilePicture: '',
     address: '',
+    isRestaurantOwner: false,
   };
 
    // Define the Yup validation schema

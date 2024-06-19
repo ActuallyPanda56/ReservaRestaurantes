@@ -11,6 +11,7 @@ const initialUser: User = {
   password: '12345678',
   profilePicture: '',
   address: '1234 Elm St.',
+  isRestaurantOwner: true
 };
 
 export const userStore = create((set) => ({
