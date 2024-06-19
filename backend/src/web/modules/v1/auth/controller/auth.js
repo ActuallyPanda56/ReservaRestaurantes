@@ -65,43 +65,58 @@ const register = (req, res) => {
     return res.status(400).json({ message: 'Por favor, proporcione todos los campos requeridos' });
   }
 
-  // Generar hash de la contraseña
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
+  // Comprobar si ya existe un usuario con el mismo email
+  const checkEmailSql = "SELECT id FROM User WHERE email = ?";
+  db.query(checkEmailSql, [email], (err, result) => {
     if (err) {
-      console.error("Error hashing password:", err);
+      console.error("Error checking email:", err);
       return res.status(500).json({ message: 'Error en el servidor' });
     }
 
-    // Insertar usuario con contraseña encriptada en la base de datos
-    const sql = "INSERT INTO user (name, last_name, email, phone_number, password) VALUES (?, ?, ?, ?, ?)";
-    db.query(sql, [name, lastName, email, phoneNumber, hashedPassword], (error, result) => {
-      if (error) {
-        console.error("Error executing query:", error);
+    if (result.length > 0) {
+      return res.status(402).json({ message: 'Ya existe una cuenta con este correo electrónico', code: 402});
+    }
+
+    // Generar hash de la contraseña
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) {
+        console.error("Error hashing password:", err);
         return res.status(500).json({ message: 'Error en el servidor' });
-      } else {
-        console.log("Número de registros insertados: " + result.affectedRows);
-        // Generate a JWT for the newly registered user
-        const token = jwt.sign({
-          exp: Math.floor(Date.now() / 1000) + expirationTime,
-          id: result.insertId,
-          name: name,
-          lastName: lastName,
-        }, SECRET_KEY);
-
-        const serialized = serialize('userToken', token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'none',
-          maxAge: expirationTime * 1000,
-          path: '/'
-        })
-        res.setHeader('Set-Cookie', serialized)
-
-        return res.json({ message: "Usuario registrado exitosamente"});
       }
+
+      const id = uuidv4();
+
+      // Insertar usuario con contraseña encriptada en la base de datos
+      const sql = "INSERT INTO User (id, name, last_name, email, phone_number, password) VALUES (?, ?, ?, ?, ?, ?)";
+      db.query(sql, [id, name, lastName, email, phoneNumber, hashedPassword], (error, result) => {
+        if (error) {
+          console.error("Error executing query:", error);
+          return res.status(500).json({ message: 'Error en el servidor' });
+        } else {
+          // Generate a JWT for the newly registered user
+          const token = jwt.sign({
+            exp: Math.floor(Date.now() / 1000) + expirationTime,
+            id,
+            name,
+            lastName,
+          }, SECRET_KEY);
+
+          const serialized = serialize('userToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            maxAge: expirationTime * 1000,
+            path: '/'
+          });
+          res.setHeader('Set-Cookie', serialized);
+
+          return res.json({ message: "Usuario registrado exitosamente" });
+        }
+      });
     });
   });
-}
+};
+
 
 // Register restaurant function
 const registerRestaurant = (req, res) => {
