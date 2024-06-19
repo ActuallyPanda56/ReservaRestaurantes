@@ -10,6 +10,7 @@ import Navbar from './components/Navbar';
 import Reservation from './components/Reservation';
 import Image from 'next/image';
 import Footer from './components/Footer';
+import RestaurantRegistration from './components/RestaurantRegistration';
 
 export default function HomeView() {
   const restaurants: Restaurant[] = [
@@ -121,6 +122,7 @@ export default function HomeView() {
                 </div>
               </div>
             ))}
+            <RestaurantRegistration />
           </div>
         </div>
       </div>
