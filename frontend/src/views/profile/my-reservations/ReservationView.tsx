@@ -1,9 +1,12 @@
 'use client';
 
 import BasicTable from '@/components/common/table/BasicTable';
+import { userStore } from '@/store/user';
+import Link from 'next/link';
 import React from 'react';
 
 export default function ReservationView() {
+  const userData = userStore((state: any) => state.user);
   const reservationData = [
     {
       name: 'Juan Perez',
@@ -176,8 +179,25 @@ export default function ReservationView() {
   return (
     <>
       <div className="flex flex-col my-20 mx-20 pr-40 gap-20 w-full">
-        <div className="w-full flex justify-between items-end">
-          <h1 className="text-5xl font-bold">Mis Reservaciones</h1>
+        <div className="flex flex-col gap-3">
+          <div className="w-full flex justify-between items-end">
+            <h1 className="text-5xl font-bold">Mis Reservaciones</h1>
+          </div>
+          <p className="text-lg text-gray-600 pr-10">
+            Aquí se muestran tus reservaciones a restaurantes. Puedes ver las
+            que están pendientes y las que ya han pasado.
+          </p>
+          {userData.isRestaurantOwner && (
+            <div className="text-lg text-gray-600 pr-10 flex gap-1">
+              <p>Si quieres ver la información de tu restaurante, haz click</p>
+              <Link
+                href="/profile/control-panel"
+                className="text-orange-500 underline hover:text-orange-600"
+              >
+                aquí
+              </Link>
+            </div>
+          )}
         </div>
         <div className="w-full flex justify-between items-end">
           <h1 className="text-3xl font-bold">Reservaciones pendientes</h1>

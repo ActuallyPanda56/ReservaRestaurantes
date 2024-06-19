@@ -24,7 +24,7 @@ export default function Reservation() {
 
   //  TODO: Implement FORMIK
   return (
-    <div className="bg-blue-100 rounded-lg p-8 max-w-screen-md w-[1200px] mx-auto">
+    <div className="bg-blue-100 rounded-lg p-8 w-full max-w-screen-lg mx-auto">
       <h2 className="text-3xl font-semibold text-center mb-1">Book a Table</h2>
       <p className="text-gray-600 text-center mb-6">
         Discover the perfect dining experience!

@@ -160,7 +160,7 @@ export default function ImageUploader({
 
   return (
     <>
-      <div className="flex gap-2 flex-col w-full max-w-[500px] items-start">
+      <div className="flex gap-2 flex-col max-w-[500px] min-w-[200px] items-start">
         {customLabel
           ? customLabel
           : label && (

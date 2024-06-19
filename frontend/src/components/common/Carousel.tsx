@@ -17,7 +17,7 @@ export default function Carousel({
     const { style, onClick } = props;
     return (
       <div
-        className="absolute top-1/2 right-8 bg-orange-400 text-2xl rounded-full z-50 h-10 w-10 flex justify-center items-center cursor-pointer"
+        className="absolute top-1/2 right-8 bg-orange-400 text-2xl rounded-full z-30 h-10 w-10 flex justify-center items-center cursor-pointer"
         style={{ ...style, display: 'block' }}
         onClick={onClick}
       />
@@ -28,7 +28,7 @@ export default function Carousel({
     const { style, onClick } = props;
     return (
       <div
-        className="absolute top-1/2  left-8 bg-orange-400 p-2 rounded-full z-50 h-10 w-10 flex justify-center items-center cursor-pointer"
+        className="absolute top-1/2  left-8 bg-orange-400 p-2 rounded-full z-30 h-10 w-10 flex justify-center items-center cursor-pointer"
         style={{ ...style, display: 'block' }}
         onClick={onClick}
       />

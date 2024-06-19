@@ -20,30 +20,30 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="flex gap-44 h-[600px] bg-gray-800 justify-center text-white items-center mt-20">
-      <div className="flex flex-col gap-5">
-        <span className="text-2xl font-semibold">
+    <footer className="flex flex-col lg:flex-row gap-10 lg:gap-44 h-auto lg:h-[600px] bg-gray-800 justify-center text-white items-center mt-20 p-6">
+      <div className="flex flex-col gap-5 items-center lg:items-start">
+        <span className="text-2xl font-semibold text-center lg:text-left">
           Newsletter & Special promos
         </span>
-        <div className="h-[80px] flex items-center">
+        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-0">
           <input
             type="text"
             placeholder="Enter your email"
-            className="py-2 px-3 w-[400px] h-full text-gray-900 text-lg focus:outline-none"
+            className="py-2 px-3 w-full sm:w-[400px] text-gray-900 text-lg focus:outline-none"
           />
-          <button className="bg-[--foreground] py-2 px-3 h-full font-bold text-lg">
+          <button className="bg-[--foreground] py-2 px-3 w-full sm:w-auto font-bold text-lg mt-2 sm:mt-0">
             Subscribe
           </button>
         </div>
       </div>
-      <div className="flex flex-col justify-center items-center gap-10">
-        <span>LOGO</span>
-        <div className="grid grid-cols-3 grid-rows-3 gap-x-4 gap-y-2">
+      <div className="flex flex-col items-center lg:items-center gap-10">
+        <span className="text-2xl font-bold">LOGO</span>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
           {links.map((link, index) => (
             <span key={index}>{link}</span>
           ))}
         </div>
-        <div className="flex justify-center gap-5 w-full text-4xl">
+        <div className="flex justify-center gap-5 text-2xl lg:text-4xl">
           <FaFacebook />
           <FaWhatsapp />
           <FaInstagram />

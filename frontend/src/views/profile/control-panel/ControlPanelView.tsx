@@ -10,7 +10,6 @@ export default function ControlPanelView() {
   const [openRestaurantIndex, setOpenRestaurantIndex] = useState<null | number>(
     null
   );
-  const [openReservationIndex, setOpenReservationIndex] = useState({});
 
   const toggleRestaurant = (index: number) => {
     setOpenRestaurantIndex(openRestaurantIndex === index ? null : index);
