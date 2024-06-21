@@ -18,10 +18,9 @@ const BasicTable: React.FC<BasicTableProps> = ({
   editFunction,
   removeFunction,
 }) => {
-  console.log(rows);
   return (
-    <div className="w-full border-b">
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className="w-full border border-[--shadow] rounded-xl">
+      <table className="min-w-full divide-y divide-[--shadow]">
         <TableHeader headers={headers} edit={edit} remove={remove} />
         <TableBody
           rows={rows}

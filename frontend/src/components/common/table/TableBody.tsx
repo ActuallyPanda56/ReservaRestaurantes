@@ -12,9 +12,9 @@ const TableBody: React.FC<{
   removeFunction: ((id: string) => void) | undefined;
 }> = ({ rows, remove, edit, editFunction, removeFunction }) => {
   return (
-    <tbody className="bg-white divide-y divide-gray-200">
+    <tbody className=" divide-y divide-gray-200">
       {rows.map((row, rowIndex) => (
-        <tr key={rowIndex} className="bg-white">
+        <tr key={rowIndex} className="">
           {Object.values(row).map((value, colIndex) => {
             // Verificar si el valor es una URL o base64
             const isURLorBase64 =
@@ -54,7 +54,7 @@ const TableBody: React.FC<{
             );
           })}
           {edit && (
-            <td className="bg-white">
+            <td className="">
               <FaEdit
                 className="text-primary-background text-xl hover:text-yellow-600 cursor-pointer"
                 onClick={() => editFunction && editFunction(row.id)}
@@ -62,7 +62,7 @@ const TableBody: React.FC<{
             </td>
           )}
           {remove && (
-            <td className="bg-white">
+            <td className="">
               <MdDelete
                 className="text-primary-background text-xl hover:text-red-500 cursor-pointer"
                 onClick={() => removeFunction && removeFunction(row.id)}

@@ -47,12 +47,14 @@ export default function ProfileView() {
                 </div>
               )}
             </div>
-            <ImageUploader
-              name="profilePicture"
-              label="foto de perfil"
-              circularCrop
-              selectOnImage
-            />
+            <div>
+              <ImageUploader
+                name="profilePicture"
+                label="foto de perfil"
+                circularCrop
+                selectOnImage
+              />
+            </div>
           </div>
 
           <ProfileForm userData={userData} />

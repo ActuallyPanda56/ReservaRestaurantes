@@ -2,6 +2,7 @@ import { User } from '@/components/constants/interfaces';
 import {create} from 'zustand';
 
 const initialUser: User = {
+  id: '5ad66684-80c5-4d3e-943a-7f6d712c675c',
   name: 'Actually',
   lastName: 'Panda',
   email: 'actuallypanda@gmail.com',

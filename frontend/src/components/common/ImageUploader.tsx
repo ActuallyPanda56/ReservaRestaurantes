@@ -20,6 +20,7 @@ interface ImageUploaderProps {
   aspectRatio?: AspectRatio;
   label?: string;
   name: string;
+  array?: boolean;
   customLabel?: React.ReactNode;
   extraInfo?: string;
   circularCrop?: boolean;
@@ -30,6 +31,7 @@ export default function ImageUploader({
   aspectRatio = AspectRatio.square,
   label,
   name,
+  array = false,
   customLabel,
   extraInfo,
   circularCrop = false,
@@ -45,7 +47,7 @@ export default function ImageUploader({
     FormikValues & { [key: string]: any }
   >();
   const [isPictureOpen, setIsPictureOpen] = useState(false);
-  const { values } = formikContext;
+  const { values, touched } = formikContext;
 
   const { fileRejections, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
@@ -158,9 +160,22 @@ export default function ImageUploader({
     return () => files.forEach(({ preview }) => URL.revokeObjectURL(preview));
   }, []);
 
+  const match = name.match(/^(\w+)\[(\d+)\]$/);
+
+  if (array) {
+    if (!match) {
+      throw new Error(
+        'Invalid name prop, if array is true, name must be in the format name[index]'
+      );
+    }
+  }
+
+  const image =
+    match && match.length > 0 && values[match[1]][parseInt(match[2], 10)];
+
   return (
     <>
-      <div className="flex gap-2 flex-col max-w-[500px] min-w-[200px] items-start">
+      <div className="flex gap-2 flex-col w-full max-w-[500px] min-w-[200px] items-start">
         {customLabel
           ? customLabel
           : label && (
@@ -193,11 +208,12 @@ export default function ImageUploader({
               </span>
             </div>
           )}
-          {values[name] !== '' ? (
+          {(values[name] && values[name] !== '') ||
+          (array && match && match.length > 0 && image) ? (
             <picture>
               <img
-                src={values[name] as string}
-                alt="banner"
+                src={array ? image : values[name]}
+                alt={name}
                 className={`object-cover w-full h-full ${
                   circularCrop && 'rounded-full'
                 }`}
@@ -232,8 +248,8 @@ export default function ImageUploader({
 
         {
           // Error message
-          typeof formikContext.errors[name] === 'string' && (
-            <span className="text-red-500 text-sm">
+          typeof formikContext.errors[name] === 'string' && touched && (
+            <span className="text-red-500 text-xs">
               {String(formikContext.errors[name])}
             </span>
           )

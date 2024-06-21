@@ -4,7 +4,7 @@ const TableHeader: React.FC<{
   remove: boolean | undefined;
 }> = ({ headers, edit, remove }) => {
   return (
-    <thead className="bg-gray-50">
+    <thead className="">
       <tr>
         {headers.map((header, index) => (
           <th
