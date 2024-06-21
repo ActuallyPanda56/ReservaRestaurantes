@@ -1,5 +1,17 @@
 const users = [
   {
+    id: '5ad66684-80c5-4d3e-943a-7f6d712c675c',
+    name: 'Actually',
+    last_name: 'Panda',
+    email: 'actuallypanda@gmail.com',
+    phone_number: '1234567890',
+    identification: '1234567890',
+    birth_date: '2021-01-01',
+    password: '12345678',
+    profile_picture: '',
+    address: '1234 Elm St.'
+  },
+  {
     id: '7285999e-0501-4837-9abf-6ef48cac512f',
     name: 'John',
     last_name: 'Doe',

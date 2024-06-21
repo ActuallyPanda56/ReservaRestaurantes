@@ -17,14 +17,14 @@ const restaurant = `CREATE TABLE Restaurant (
   id VARCHAR(36) NOT NULL PRIMARY KEY,
   user_id VARCHAR(36) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  description VARCHAR(255) NOT NULL,
+  description VARCHAR(255),
   banner VARCHAR(255),
   pictures JSON,
   menu JSON,
   type VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL,
   rating INT(11),
-  capacity INT(11) NOT NULL,
+  capacity JSON NOT NULL,
   age_restricted BOOLEAN NOT NULL,
   FOREIGN KEY (user_id) REFERENCES User(id)
 );`
