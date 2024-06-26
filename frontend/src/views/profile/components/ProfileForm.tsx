@@ -2,6 +2,7 @@
 
 import { Field, FormikProvider, FormikValues, useFormikContext } from 'formik';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import useProfileForm from '../hooks/useProfileForm';
 import { userStore } from '@/store/user';
 import ImageUploader from '@/components/common/ImageUploader';
@@ -13,16 +14,30 @@ export default function ProfileForm({ userData }: any) {
   >();
   const { setValues, values, handleSubmit, touched, errors, setFieldValue } =
     formikContext;
+  
   // Update Formik initial values when userData changes
   useEffect(() => {
     setValues(userData);
   }, [userData]);
 
-  // TODO: User MUST be reauthenticated after changing email and before changing password
-  // TODO: Logout functionallity
+  // Function to update user data
+  const updateUser = async (values) => {
+    try {
+      const response = await axios.post('/api/updateUser', values);
+      console.log(response.data.message);
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
+
+  // Modified handleSubmit to send updated data to the server
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    updateUser(values);
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-5 w-full">
+    <form onSubmit={handleSubmitForm} className="flex flex-col gap-5 w-full">
       <div className="flex gap-10">
         <div className="flex flex-col gap-1 pl-20 w-full">
           <span className="text-xl font-bold">Nombre</span>
@@ -267,7 +282,6 @@ export default function ProfileForm({ userData }: any) {
           <div className="text-red-600 text-">{String(errors.address)}</div>
         ) : null}
       </div>
-
       <div className="flex justify-between px-20">
         <button className="btn-alert rounded-lg">Cerrar sesión</button>
         {(values.name !== userData.name ||
