@@ -2,7 +2,7 @@ const users = require("./userSeeder");
 const restaurants = require("./restaurantSeeder");
 const reviews = require("./reviewSeeder");
 
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const bcrypt = require('bcrypt');
 
 async function seedDatabase() {
