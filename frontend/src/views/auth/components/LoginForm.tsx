@@ -1,13 +1,19 @@
+// LoginForm.js (Modificado para incluir el formulario de restablecimiento de contraseña)
+
 import React, { useState } from 'react';
 import { Field, FormikProvider, ErrorMessage } from 'formik';
 import { GoEye, GoEyeClosed } from 'react-icons/go';
 import useLoginForm from '../hooks/useLoginForm';
 
-export default function LoginForm() {
+export default function LoginForm({ showResetPasswordForm, setShowResetPasswordForm }) {
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
 
   const formik = useLoginForm();
   const { submitForm, errors, touched } = formik;
+
+  const handleForgotPasswordClick = () => {
+    setShowResetPasswordForm(true);
+  };
 
   return (
     <FormikProvider value={formik}>
@@ -24,48 +30,61 @@ export default function LoginForm() {
                 type="text"
                 placeholder="Email"
                 className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
-              ></Field>
+              />
             </div>
             {touched.email && errors.email && (
               <div className="text-red-500 text-xs mt-1">{errors.email}</div>
             )}
           </div>
-          <div className="flex flex-col">
-            <div
-              className={`flex relative items-center gap-2 px-2 border-b transition-all ${
-                formik.values.password !== '' ? 'border-[--foreground]' : ''
-              }`}
-            >
-              <Field
-                name="password"
-                type={!isPasswordShowing ? 'password' : 'text'}
-                placeholder="Password"
-                className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
-              ></Field>
-              {isPasswordShowing ? (
-                <GoEye
-                  onClick={() => {
-                    setIsPasswordShowing(!isPasswordShowing);
-                  }}
-                  className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
+          {!showResetPasswordForm && (
+            <div className="flex flex-col">
+              <div
+                className={`flex relative items-center gap-2 px-2 border-b transition-all ${
+                  formik.values.password !== '' ? 'border-[--foreground]' : ''
+                }`}
+              >
+                <Field
+                  name="password"
+                  type={!isPasswordShowing ? 'password' : 'text'}
+                  placeholder="Password"
+                  className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
                 />
-              ) : (
-                <GoEyeClosed
-                  onClick={() => {
-                    setIsPasswordShowing(!isPasswordShowing);
-                  }}
-                  className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
-                />
+                {isPasswordShowing ? (
+                  <GoEye
+                    onClick={() => {
+                      setIsPasswordShowing(!isPasswordShowing);
+                    }}
+                    className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
+                  />
+                ) : (
+                  <GoEyeClosed
+                    onClick={() => {
+                      setIsPasswordShowing(!isPasswordShowing);
+                    }}
+                    className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
+                  />
+                )}
+              </div>
+              {touched.password && errors.password && (
+                <div className="text-red-500 text-xs mt-1">{errors.password}</div>
               )}
             </div>
-            {touched.password && errors.password && (
-              <div className="text-red-500 text-xs mt-1">{errors.password}</div>
-            )}
-          </div>
+          )}
         </div>
-        <button type="button" onClick={submitForm} className="btn-primary">
-          Iniciar sesión
-        </button>
+        {!showResetPasswordForm ? (
+          <button type="button" onClick={submitForm} className="btn-primary">
+            Iniciar sesión
+          </button>
+        ) : (
+          <button type="button" className="btn-primary">
+            Enviar correo de recuperación
+          </button>
+        )}
+        {!showResetPasswordForm && (
+          <button className="text-gray-600 hover:underline" onClick={handleForgotPasswordClick}>
+            ¿Olvidaste tu contraseña?
+          </button>
+        )}
       </div>
     </FormikProvider>
   );
