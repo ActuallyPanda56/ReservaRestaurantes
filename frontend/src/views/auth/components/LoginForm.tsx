@@ -1,94 +1,53 @@
+// En el componente LoginForm.js (o donde estés manejando el inicio de sesión)
 import React, { useState } from 'react';
-import { Field, Formik, Form } from 'formik'; // Asegúrate de importar correctamente desde Formik
+import { Field, FormikProvider, ErrorMessage } from 'formik';
+import { GoEye, GoEyeClosed } from 'react-icons/go';
 import axios from 'axios';
 
-const ResetPasswordForm = () => {
+export default function LoginForm({ setShowResetPasswordForm }) {
+  const [isPasswordShowing, setIsPasswordShowing] = useState(false);
   const [email, setEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailExists, setEmailExists] = useState(false);
   const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
 
-  const handleSubmit = async (values, actions) => {
-    const { email, newPassword, confirmPassword } = values;
-
-    if (newPassword !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
-      return;
-    }
-
+  const handleForgotPasswordClick = async () => {
     try {
       const emailCheckResponse = await axios.post('/v1/api/check-email', { email });
+      setEmailExists(emailCheckResponse.data.exists);
 
       if (!emailCheckResponse.data.exists) {
         setError('El correo electrónico no está registrado');
-        return;
+      } else {
+        setShowResetPasswordForm(true); // Mostrar formulario de restablecimiento de contraseña
       }
-
-      const resetPasswordResponse = await axios.post('/v1/api/reset-password', {
-        token: '', // Ajustar aquí el token si es necesario
-        password: newPassword,
-        confirmPassword: confirmPassword
-      });
-
-      setSuccessMessage(resetPasswordResponse.data.message);
-      setEmail('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setError('');
     } catch (error) {
-      console.error('Error al restablecer la contraseña:', error);
+      console.error('Error al verificar el correo electrónico:', error);
       setError('Error al procesar la solicitud');
     }
   };
 
   return (
-    <div>
-      <Formik
-        initialValues={{ email: '', newPassword: '', confirmPassword: '' }}
-        onSubmit={handleSubmit}
-      >
-        {formik => (
-          <Form>
-            <label htmlFor="email">Correo electrónico:</label>
-            <Field
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-
-            <label htmlFor="newPassword">Nueva contraseña:</label>
-            <Field
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
-
-            <label htmlFor="confirmPassword">Confirmar contraseña:</label>
-            <Field
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-
-            {error && <div className="text-red-500">{error}</div>}
-            {successMessage && <div className="text-green-500">{successMessage}</div>}
-
-            <button type="submit">Cambiar contraseña</button>
-          </Form>
-        )}
-      </Formik>
-    </div>
+    <FormikProvider>
+      <div className="flex flex-col justify-between h-full py-5">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col">
+            <div className="flex relative items-center gap-2 px-2 border-b transition-all">
+              <Field
+                name="email"
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
+              />
+            </div>
+            {error && <div className="text-red-500 text-xs mt-1">{error}</div>}
+          </div>
+        </div>
+        <button type="button" onClick={handleForgotPasswordClick} className="btn-primary">
+          ¿Olvidaste tu contraseña?
+        </button>
+      </div>
+    </FormikProvider>
   );
-};
-
-export default ResetPasswordForm;
+}
