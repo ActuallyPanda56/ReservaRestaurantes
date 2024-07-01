@@ -27,7 +27,6 @@ const useRegisterForm = () => {
     terms: false,
   };
 
-  // Define the Yup validation schema
   const validationSchema = Yup.object({
     email: Yup.string()
       .email('Invalid email address')
@@ -84,7 +83,7 @@ const useRegisterForm = () => {
           }
           else {
             console.error('Error en la solicitud:', err);
-          alert('Error en la solicitud'); // Show an error message to the user
+            alert('Error en la solicitud'); // Show an error message to the user
           }
         });
     } catch (error) {

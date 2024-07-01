@@ -1,5 +1,3 @@
-// ResetPasswordForm.tsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -19,29 +17,29 @@ const ResetPasswordForm: React.FC = () => {
     }
 
     try {
-      // Verificar el correo electrónico antes de proceder
-      const emailCheckResponse = await axios.post('/api/check-email', { email });
-      
+      // Verificar si el correo electrónico está registrado
+      const emailCheckResponse = await axios.post<{ exists: boolean }>('/v1/check-email', { email });
+
       if (!emailCheckResponse.data.exists) {
         setError('El correo electrónico no está registrado');
         return;
       }
 
       // Proceder con el restablecimiento de contraseña
-      const resetPasswordResponse = await axios.post('/api/reset-password', { token: emailCheckResponse.data.resetToken, password: newPassword, confirmPassword });
-      
+      const resetPasswordResponse = await axios.post('/v1/reset-password', {
+        token: '', // Ajustar aquí el token si es necesario
+        password: newPassword,
+        confirmPassword: confirmPassword
+      });
+
       setSuccessMessage(resetPasswordResponse.data.message);
       setEmail('');
       setNewPassword('');
       setConfirmPassword('');
       setError('');
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setError('No se encontró la ruta para restablecer la contraseña');
-      } else {
-        console.error('Error al restablecer la contraseña:', error);
-        setError('Error al procesar la solicitud');
-      }
+      console.error('Error al restablecer la contraseña:', error);
+      setError('Error al procesar la solicitud');
     }
   };
 
