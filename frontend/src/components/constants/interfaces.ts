@@ -1,4 +1,14 @@
 import { StaticImageData } from "next/image";
+import { RestaurantType } from "./enums";
+
+export interface RestaurantCardProps {
+  id: string;
+  name: string;
+  description: string;
+  image: string | StaticImageData;
+  rating?: number;
+  age_restricted?: boolean;
+}
 
 export interface Restaurant {
   title: string;
@@ -20,16 +30,27 @@ export interface User {
   isRestaurantOwner: boolean;
 }
 export interface TableRow {
-  [key: string]: string;
+  [key: string]: string | number | string[];
 }
 
-export interface RestuaurantData {
+export interface RestaurantData {
+  id: string;
+  user_id: string;
   name: string;
+  description?: string;
+  short_description?: string;
+  banner: string;
   address: string;
-  phone: string[];
-  email: string;
-  schedule: string;
-  reservations: {
+  phone_number?: string[];
+  email?: string;
+  rating?: number;
+  schedule?: string;
+  age_restricted: boolean;
+  menuPictures: string[];
+  menuInfo: string[]
+  pictures: string[];
+  type: RestaurantType;
+  reservations?: {
     date: string;
     time: string;
     table: number;

@@ -8,6 +8,7 @@ interface RestaurantRegisterData {
   userId: string;
   name: string;
   description: string;
+  shortDescription: string;
   banner: string;
   pictures: string[];
   menuPictures: string[];
@@ -33,6 +34,7 @@ const useRestaurantRegisterForm = () => {
     userId: userId,
     name: '',
     description: '',
+    shortDescription: '',
     banner: '',
     pictures: [],
     menuPictures: [],
@@ -55,6 +57,8 @@ const useRestaurantRegisterForm = () => {
       .required('El nombre es obligatorio'),
     description: Yup.string()
       .min(10, 'La descripción debe tener al menos 10 caracteres'),
+    shortDescription: Yup.string()
+      .max(255, 'La descripción corta no debe superar los 255 caracteres'),
     banner: Yup.string()
       .required('El banner es obligatorio'),
     pictures: Yup.array()

@@ -1,9 +1,11 @@
 import { User } from '@/components/constants/interfaces';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 const useProfileForm = () => {
   const initialValues = {
+    id: '',
     name: '',
     lastName: '',
     email: '',
@@ -53,8 +55,22 @@ const useProfileForm = () => {
   });
 
   const handleSubmit = async (data: User) => {
-    // TODO: Implement form submission
-    // ! MISSING USER CRUD OPERATIONS Implement backend.
+    try {
+      axios
+        .put('http://localhost:8081/v1/user/update/' + data.id, data)
+        .then((res) => {
+          if (res.status === 200) {
+            // Lógica de éxito
+            alert("Perfil actualizado exitosamente"); // Redirect to the desired page
+          }
+        })
+        .catch((err) => {
+            // Lógica de error
+          console.error('Error en la solicitud:', err);
+        });
+    } catch (error) {
+      alert('Error en la solicitud');
+    }
   };
 
   return formik;

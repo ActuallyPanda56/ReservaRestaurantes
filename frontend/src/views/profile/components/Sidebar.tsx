@@ -13,8 +13,8 @@ export default function Sidebar() {
   // TODO: Search if user is restaurant Owner in the db
 
   return (
-    <div className="fixed flex flex-col items-center justify-between w-[150px] h-screen bg-[--foreground] py-10 md:py-20 text-white">
-      <div className="flex flex-col items-center gap-10 md:gap-20">
+    <div className="fixed flex flex-col items-center justify-between w-[150px] h-screen bg-[--foreground] py-10 md:py-10 text-white">
+      <div className="flex flex-col items-center gap-5 md:gap-10">
         <span className="text-lg md:text-xl lg:text-2xl">LOGO</span>
         <Link href="/">
           <FaHouse className="text-2xl md:text-3xl" />

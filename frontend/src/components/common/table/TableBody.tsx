@@ -57,7 +57,7 @@ const TableBody: React.FC<{
             <td className="">
               <FaEdit
                 className="text-primary-background text-xl hover:text-yellow-600 cursor-pointer"
-                onClick={() => editFunction && editFunction(row.id)}
+                onClick={() => editFunction && editFunction(row.id.toString())}
               />
             </td>
           )}
@@ -65,7 +65,7 @@ const TableBody: React.FC<{
             <td className="">
               <MdDelete
                 className="text-primary-background text-xl hover:text-red-500 cursor-pointer"
-                onClick={() => removeFunction && removeFunction(row.id)}
+                onClick={() => removeFunction && removeFunction(row.id.toString())}
               />
             </td>
           )}

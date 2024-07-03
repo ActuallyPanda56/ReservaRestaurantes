@@ -24,19 +24,10 @@ export default function RestaurantRegistrationView() {
   const formik = useRestaurantRegisterForm();
   const { values, touched, errors, submitForm } = formik;
 
-  const handleChangeEdit = () => {
-    setIsEditing(true);
-  };
-
-  const tableRows = values.capacity.map((item) => ({
-    tableCapacity: item.tableCapacity.toString(),
-    tableCount: item.tableCount.toString(),
-  }));
-
   return (
     <>
       <FormikProvider value={formik}>
-        <div className="my-20 w-screen flex justify-center items-center">
+        <div className="my-20 px-5 w-screen flex justify-center items-center">
           <div className="flex flex-col gap-3">
             <div className="flex flex-col">
               <h1 className="text-4xl font-bold">
@@ -70,9 +61,19 @@ export default function RestaurantRegistrationView() {
                 <span className="text-sm text-gray-500 tracking-tight font-bold">
                   Descripción de tu restaurante
                 </span>
+                <div className='max-w-[800px]'>
                 <MarkdownEditor
                   name="description"
                   placeholder="Escribe una descripción para tu restaurante..."
+                />
+                </div>
+                <span className="text-sm text-gray-500 tracking-tight font-bold">
+                  Descripción corta de tu restaurante
+                </span>
+                <InputField
+                  name="shortDescription"
+                  type="text"
+                  label="Descripción corta de tu restaurante"
                 />
                 <div
                   className={`flex relative items-center gap-2 justify-center w-full`}
@@ -148,7 +149,7 @@ export default function RestaurantRegistrationView() {
                 ) : (
                   <div className="flex flex-col gap-2 w-full items-end">
                     <BasicTable
-                      rows={tableRows}
+                      rows={values.capacity}
                       headers={['Tamaño de tus mesas', 'Cantidad de mesas']}
                     />
                     <button

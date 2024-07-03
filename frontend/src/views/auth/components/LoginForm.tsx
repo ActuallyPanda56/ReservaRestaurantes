@@ -1,51 +1,56 @@
-// En el componente LoginForm.js (o donde estés manejando el inicio de sesión)
+'use client';
+
 import React, { useState } from 'react';
 import { Field, FormikProvider, ErrorMessage } from 'formik';
 import { GoEye, GoEyeClosed } from 'react-icons/go';
-import axios from 'axios';
+import useLoginForm from '../hooks/useLoginForm';
 
-export default function LoginForm({ setShowResetPasswordForm }) {
+export default function LoginForm() {
   const [isPasswordShowing, setIsPasswordShowing] = useState(false);
-  const [email, setEmail] = useState('');
-  const [emailExists, setEmailExists] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleForgotPasswordClick = async () => {
-    try {
-      const emailCheckResponse = await axios.post('/v1/api/check-email', { email });
-      setEmailExists(emailCheckResponse.data.exists);
-
-      if (!emailCheckResponse.data.exists) {
-        setError('El correo electrónico no está registrado');
-      } else {
-        setShowResetPasswordForm(true); // Mostrar formulario de restablecimiento de contraseña
-      }
-    } catch (error) {
-      console.error('Error al verificar el correo electrónico:', error);
-      setError('Error al procesar la solicitud');
-    }
-  };
+  const formik = useLoginForm();
+  const { submitForm, values, touched, errors } = formik;
 
   return (
-    <FormikProvider>
+    <FormikProvider value={formik}>
       <div className="flex flex-col justify-between h-full py-5">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col">
-            <div className="flex relative items-center gap-2 px-2 border-b transition-all">
+            <div className={`flex relative items-center gap-2 px-2 border-b transition-all ${values.email !== '' && 'border-[--foreground]' }`}>
               <Field
                 name="email"
                 type="text"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Correo electrónico"
                 className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
               />
             </div>
-            {error && <div className="text-red-500 text-xs mt-1">{error}</div>}
+            {errors.email && touched.email && <div className="text-red-500 text-xs mt-1">{errors.email}</div>}
+          </div>
+          <div className="flex flex-col">
+            <div className={`flex relative items-center gap-2 px-2 border-b transition-all ${values.password !== '' && 'border-[--foreground]' }`}>
+              <Field
+                name="password"
+                type={isPasswordShowing ? 'text' : 'password'}
+                placeholder="Contraseña"
+                className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
+              />
+              <span
+                onClick={() => {
+                  setIsPasswordShowing(!isPasswordShowing);
+                }}
+                className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
+              >
+                {isPasswordShowing ? <GoEye /> : <GoEyeClosed />}
+              </span>
+            </div>
+            {errors.password && touched.password && <div className="text-red-500 text-xs mt-1">{errors.password}</div>}
           </div>
         </div>
-        <button type="button" onClick={handleForgotPasswordClick} className="btn-primary">
-          ¿Olvidaste tu contraseña?
+        <button
+          type="button"
+          onClick={submitForm}
+          className="btn-primary"
+        >
+          Iniciar Sesión
         </button>
       </div>
     </FormikProvider>
