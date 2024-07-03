@@ -9,7 +9,10 @@ const user = `CREATE TABLE User (
   birth_date DATE,
   password VARCHAR(255) NOT NULL,
   profile_picture VARCHAR(255),
-  address VARCHAR(255)
+  address VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL
 );`;
 
 // Restaurant table schema
@@ -17,15 +20,20 @@ const restaurant = `CREATE TABLE Restaurant (
   id VARCHAR(36) NOT NULL PRIMARY KEY,
   user_id VARCHAR(36) NOT NULL,
   name VARCHAR(255) NOT NULL,
-  description VARCHAR(255),
-  banner VARCHAR(255),
+  description VARCHAR(4096),
+  short_description VARCHAR(255),
+  banner VARCHAR(1048575),
   pictures JSON,
   menu JSON,
   type VARCHAR(255) NOT NULL,
   address VARCHAR(255) NOT NULL,
+  phone_number JSON,
   rating INT(11),
   capacity JSON NOT NULL,
   age_restricted BOOLEAN NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL,
   FOREIGN KEY (user_id) REFERENCES User(id)
 );`
 
@@ -37,6 +45,9 @@ const review = `CREATE TABLE Review (
   rating INT(11) NOT NULL,
   title VARCHAR(255) NOT NULL,
   description VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL,
   FOREIGN KEY (user_id) REFERENCES User(id),
   FOREIGN KEY (restaurant_id) REFERENCES Restaurant(id)
 );`
@@ -52,6 +63,9 @@ const booking = `CREATE TABLE Booking (
   price DECIMAL(10, 2) NOT NULL,
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL,
   FOREIGN KEY (user_id) REFERENCES User(id),
   FOREIGN KEY (restaurant_id) REFERENCES Restaurant(id)
 );`
@@ -72,4 +86,4 @@ module.exports = {
   review,
   booking,
   schedule
-}
+};

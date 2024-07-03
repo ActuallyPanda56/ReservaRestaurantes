@@ -4,7 +4,7 @@ const restaurants = [
     user_id: '7285999e-0501-4837-9abf-6ef48cac512f',
     name: 'The Gourmet Kitchen',
     description: 'A fine dining experience with a blend of world cuisines.',
-    banner: 'https://example.com/banners/gourmet-kitchen.jpg',
+    banner: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?cs=srgb&dl=pexels-chanwalrus-958545.jpg&fm=jpg',
     pictures: JSON.stringify([
       'https://example.com/images/gourmet-kitchen1.jpg',
       'https://example.com/images/gourmet-kitchen2.jpg'
@@ -24,7 +24,7 @@ const restaurants = [
     user_id: '8a7434c2-3e22-4f18-b9de-43fbec61b409',
     name: 'Burger Haven',
     description: 'The best burgers in town with a variety of toppings.',
-    banner: 'https://example.com/banners/burger-haven.jpg',
+    banner: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?cs=srgb&dl=pexels-chanwalrus-958545.jpg&fm=jpg',
     pictures: JSON.stringify([
       'https://example.com/images/burger-haven1.jpg',
       'https://example.com/images/burger-haven2.jpg'
@@ -44,7 +44,7 @@ const restaurants = [
     user_id: 'b3c10c6a-7b0f-4cfa-8d6f-cdba52b9c8c9',
     name: 'Pasta Palace',
     description: 'Authentic Italian pasta dishes in a cozy setting.',
-    banner: 'https://example.com/banners/pasta-palace.jpg',
+    banner: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?cs=srgb&dl=pexels-chanwalrus-958545.jpg&fm=jpg',
     pictures: JSON.stringify([
       'https://example.com/images/pasta-palace1.jpg',
       'https://example.com/images/pasta-palace2.jpg'
@@ -64,7 +64,7 @@ const restaurants = [
     user_id: 'eab8b6d5-f8f1-41f9-8c92-d3f1f8a5f8b9',
     name: 'Sushi Central',
     description: 'Fresh sushi and sashimi made to order.',
-    banner: 'https://example.com/banners/sushi-central.jpg',
+    banner: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?cs=srgb&dl=pexels-chanwalrus-958545.jpg&fm=jpg',
     pictures: JSON.stringify([
       'https://example.com/images/sushi-central1.jpg',
       'https://example.com/images/sushi-central2.jpg'
@@ -84,7 +84,7 @@ const restaurants = [
     user_id: 'a3f6c1d2-6c5e-4e8a-bf6c-70bf1a9f1a3f',
     name: 'Taco Fiesta',
     description: 'A vibrant spot for tacos and margaritas.',
-    banner: 'https://example.com/banners/taco-fiesta.jpg',
+    banner: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?cs=srgb&dl=pexels-chanwalrus-958545.jpg&fm=jpg',
     pictures: JSON.stringify([
       'https://example.com/images/taco-fiesta1.jpg',
       'https://example.com/images/taco-fiesta2.jpg'

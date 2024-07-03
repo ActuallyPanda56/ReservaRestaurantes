@@ -12,9 +12,9 @@ const checkEmail = (req, res) => {
       return res.status(500).json({ message: 'Error en el servidor' });
     } else {
       if (data.length === 0) {
-        return res.json({ exists: false }); // El correo electrónico no está registrado
+        return res.status(401).json({ exists: false }); // El correo electrónico no está registrado
       } else {
-        return res.json({ exists: true }); // El correo electrónico está registrado
+        return res.status(200).json({  }); // El correo electrónico está registrado
       }
     }
   });
