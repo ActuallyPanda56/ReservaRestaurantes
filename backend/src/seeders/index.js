@@ -1,27 +1,26 @@
-const users = require("./userSeeder");
-const restaurants = require("./restaurantSeeder");
-const reviews = require("./reviewSeeder");
-
-const mysql = require("mysql2");
+const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
+const users = require('./userSeeder');
+const restaurants = require('./restaurantSeeder');
+const reviews = require('./reviewSeeder');
+const bookings = require('./bookingSeeder');
+const schedules = require('./scheduleSeeder');
 
 async function seedDatabase() {
-  const db = mysql.createConnection({
+  const db = await mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
     database: "curd",
   });
 
-  await db.connect();
-
-  // Insertar usuarios
+  // Insert users
   for (const user of users) {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
     const sql = `INSERT INTO User (id, name, last_name, email, phone_number, identification, birth_date, password, profile_picture, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.query(
+    await db.query(
       sql,
       [
         user.id,
@@ -31,51 +30,57 @@ async function seedDatabase() {
         user.phone_number,
         user.identification,
         user.birth_date,
-        hashedPassword,  // Almacenamos la contraseña hasheada
+        hashedPassword,
         user.profile_picture,
         user.address,
-      ],
-      (error) => {
-        if (error) {
-          console.log("Error inserting user:", error);
-        }
-      }
+      ]
     );
   }
   console.log("Users inserted");
 
-  // Insertar restaurantes
+  // Populate user_ids in restaurants
+  const [userIds] = await db.query(`SELECT id FROM User`);
+  restaurants.forEach((restaurant, index) => {
+    restaurant.user_id = userIds[index % userIds.length].id;
+  });
+
+  // Insert restaurants
   for (const restaurant of restaurants) {
-    const sql = `INSERT INTO Restaurant (id, user_id, name, description, banner, pictures, menu, type, address, rating, capacity, age_restricted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    db.query(
+    const sql = `INSERT INTO Restaurant (id, user_id, name, description, short_description, banner, pictures, menu_picture, menu_info, type, address, phone_number, rating, capacity, age_restricted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    await db.query(
       sql,
       [
         restaurant.id,
         restaurant.user_id,
         restaurant.name,
         restaurant.description,
+        restaurant.short_description,
         restaurant.banner,
         restaurant.pictures,
-        restaurant.menu,
+        restaurant.menu_picture,
+        restaurant.menu_info,
         restaurant.type,
         restaurant.address,
+        restaurant.phone_number,
         restaurant.rating,
         restaurant.capacity,
         restaurant.age_restricted,
-      ],
-      (error) => {
-        if (error) {
-          console.log("Error inserting restaurant:", error);
-        }
-      }
+      ]
     );
   }
   console.log("Restaurants inserted");
 
-  // Insertar reseñas
+  // Populate user_ids and restaurant_ids in reviews
+  const [restaurantIds] = await db.query(`SELECT id FROM Restaurant`);
+  reviews.forEach((review, index) => {
+    review.user_id = userIds[index % userIds.length].id;
+    review.restaurant_id = restaurantIds[index % restaurantIds.length].id;
+  });
+
+  // Insert reviews
   for (const review of reviews) {
     const sql = `INSERT INTO Review (id, user_id, restaurant_id, rating, title, description) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.query(
+    await db.query(
       sql,
       [
         review.id,
@@ -84,20 +89,62 @@ async function seedDatabase() {
         review.rating,
         review.title,
         review.description,
-      ],
-      (error) => {
-        if (error) {
-          console.log("Error inserting review:", error);
-        }
-      }
+      ]
     );
   }
   console.log("Reviews inserted");
 
-  db.end(() => {
-    console.log("Database connection closed.");
-    process.exit(); // Terminate Node.js process
+  // Populate user_ids and restaurant_ids in bookings
+  bookings.forEach((booking, index) => {
+    booking.user_id = userIds[index % userIds.length].id;
+    booking.restaurant_id = restaurantIds[index % restaurantIds.length].id;
   });
+
+  // Insert bookings
+  for (const booking of bookings) {
+    const sql = `INSERT INTO Booking (id, user_id, restaurant_id, status, adults, children, price, date, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    await db.query(
+      sql,
+      [
+        booking.id,
+        booking.user_id,
+        booking.restaurant_id,
+        booking.status,
+        booking.adults,
+        booking.children,
+        booking.price,
+        booking.date,
+        booking.start_time,
+        booking.end_time,
+      ]
+    );
+  }
+  console.log("Bookings inserted");
+
+  // Populate restaurant_ids in schedules
+  schedules.forEach((schedule, index) => {
+    schedule.restaurant_id = restaurantIds[index % restaurantIds.length].id;
+  });
+
+  // Insert schedules
+  for (const schedule of schedules) {
+    const sql = `INSERT INTO Schedule (id, restaurant_id, day, start_time, end_time) VALUES (?, ?, ?, ?, ?)`;
+    await db.query(
+      sql,
+      [
+        schedule.id,
+        schedule.restaurant_id,
+        schedule.day,
+        schedule.start_time,
+        schedule.end_time,
+      ]
+    );
+  }
+  console.log("Schedules inserted");
+
+  await db.end();
+  console.log("Database connection closed.");
+  process.exit();
 }
 
 seedDatabase();
