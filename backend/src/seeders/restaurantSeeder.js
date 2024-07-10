@@ -3,12 +3,12 @@ const { faker } = require("@faker-js/faker");
 
 const restaurants = [];
 
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 30; i++) {
   const restaurantCapacity = [];
 
   for (let i = 0; i < faker.number.int({ min: 2, max: 10 }); i++) {
     restaurantCapacity.push({
-      tableCapacity: faker.number.int({ min: 2, max: 6 }),
+      tableCapacity: faker.number.int({ min: 2, max: 8 }),
       tableCount: faker.number.int({ min: 5, max: 20 }),
     });
   }

@@ -44,21 +44,53 @@ const getRestaurants = (req, res) => {
 // Get restaurant by ID (excluding soft deleted ones)
 const getRestaurantById = (req, res) => {
   const { id } = req.params;
-  const sql = "SELECT * FROM restaurant WHERE id = ? AND deleted_at IS NULL";
 
-  db.query(sql, [id], (error, data) => {
+  const restaurantSql = `
+    SELECT * FROM restaurant 
+    WHERE id = ? AND deleted_at IS NULL`;
+
+  const scheduleSql = `
+    SELECT id, day, start_time, end_time 
+    FROM schedule 
+    WHERE restaurant_id = ?`;
+
+  const reviewSql = `
+    SELECT id, user_id, rating, title, description, created_at 
+    FROM review 
+    WHERE restaurant_id = ?`;
+
+  db.query(restaurantSql, [id], (error, restaurantData) => {
     if (error) {
       console.error("Error executing query:", error);
       return res.status(500).json("Internal Server Error");
     } else {
-      if (data.length > 0) {
-        return res.status(200).json(data[0]);
+      if (restaurantData.length > 0) {
+        const restaurant = restaurantData[0];
+
+        db.query(scheduleSql, [id], (error, scheduleData) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            return res.status(500).json("Internal Server Error");
+          } else {
+            restaurant.schedule = scheduleData;
+
+            db.query(reviewSql, [id], (error, reviewData) => {
+              if (error) {
+                console.error("Error executing query:", error);
+                return res.status(500).json("Internal Server Error");
+              } else {
+                restaurant.reviews = reviewData;
+                return res.status(200).json(restaurant);
+              }
+            });
+          }
+        });
       } else {
         return res.status(404).json("Restaurante no encontrado");
       }
     }
   });
-}
+};
 
 // Update restaurant by ID
 const updateRestaurant = (req, res) => {

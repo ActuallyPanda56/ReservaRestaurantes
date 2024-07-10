@@ -7,12 +7,16 @@ const bookings = require('./bookingSeeder');
 const schedules = require('./scheduleSeeder');
 
 async function seedDatabase() {
+  console.log("Connecting to database...");
   const db = await mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
     database: "curd",
   });
+
+  console.log("Database connected");
+  console.log("Inserting data...");
 
   // Insert users
   for (const user of users) {
@@ -102,13 +106,14 @@ async function seedDatabase() {
 
   // Insert bookings
   for (const booking of bookings) {
-    const sql = `INSERT INTO Booking (id, user_id, restaurant_id, status, adults, children, price, date, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO Booking (id, user_id, restaurant_id, bearer_name, status, adults, children, price, date, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
     await db.query(
       sql,
       [
         booking.id,
         booking.user_id,
         booking.restaurant_id,
+        booking.bearer_name,
         booking.status,
         booking.adults,
         booking.children,

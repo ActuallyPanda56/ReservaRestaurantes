@@ -3,16 +3,18 @@ const mysql = require("mysql2");
 const queries = require("./schema/rawTableCreationSql");
 
 function manageMigration() {
-  dotenv.config();
   const tableList = ["user", "restaurant", "review", "booking", "schedule"];
 
   console.log("Table list:", tableList);
 
+  console.log("Connecting to database...");
   const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
   });
+
+  console.log("Database connected");
 
   db.query("CREATE DATABASE IF NOT EXISTS curd", (error) => {
     if (error) {

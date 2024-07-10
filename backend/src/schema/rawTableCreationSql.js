@@ -58,6 +58,7 @@ const booking = `CREATE TABLE Booking (
   id VARCHAR(36) NOT NULL PRIMARY KEY,
   user_id VARCHAR(36) NOT NULL,
   restaurant_id VARCHAR(36) NOT NULL,
+  bearer_name VARCHAR(255) NOT NULL,
   status VARCHAR(255) NOT NULL,
   adults INT(11) NOT NULL,
   children INT(11) NOT NULL,

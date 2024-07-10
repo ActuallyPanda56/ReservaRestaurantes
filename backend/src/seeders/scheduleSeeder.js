@@ -3,7 +3,7 @@ const {faker} = require('@faker-js/faker');
 
 const schedules = [];
 
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const days = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
 
 for (let i = 0; i < 80; i++) {
   schedules.push({
