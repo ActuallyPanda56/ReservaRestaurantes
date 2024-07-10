@@ -12,3 +12,16 @@ export enum RestaurantType {
   cafe = 'Cafetería',
   other = 'Otro',
 }
+
+export enum HttpMethods {
+  GET = 'GET',
+  POST = 'POST',
+  PUT = 'PUT',
+  DELETE = 'DELETE',
+}
+
+export enum BookingStatus {
+  pending = 'Pendiente',
+  confirmed = 'Confirmada',
+  canceled = 'Cancelada',
+}

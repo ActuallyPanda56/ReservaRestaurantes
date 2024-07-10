@@ -25,19 +25,12 @@ export default function RestaurantCapacity({
   // Ensure the initial values are set up correctly
   useEffect(() => {
     if (!values[name] || values[name].length === 0) {
-      setFieldValue(name, [{ tableCapacity: '', tableCount: '' }]);
+      setFieldValue(name, [{ tableCapacity: 1, tableCount: 1 }]);
     }
   }, [name, setFieldValue, values]);
 
   return (
     <div className="flex flex-col gap-2 w-full">
-      <span className="text-sm text-gray-500 tracking-tight font-bold">
-        {label}
-      </span>
-      <div className="flex justify-between text-gray-500 tracking-tight text-xs w-[365px]">
-        <span>Tamaño de tus mesas</span>
-        <span>Cantidad de mesas</span>
-      </div>
       <FieldArray
         name={name}
         render={(arrayHelpers) => (
@@ -73,7 +66,7 @@ export default function RestaurantCapacity({
                       onClick={() => arrayHelpers.remove(index)}
                       className="btn-alert rounded-lg"
                     >
-                      Delete
+                      Eliminar
                     </button>
                   )}
                 </div>
@@ -89,7 +82,7 @@ export default function RestaurantCapacity({
             { tableCapacity: '', tableCount: '' },
           ]);
         }}
-        className="btn-primary"
+        className="btn-primary rounded-lg w-full mt-2"
       >
         Añadir mesa
       </button>

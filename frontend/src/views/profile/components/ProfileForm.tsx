@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 
 export default function ProfileForm({ userData }: any) {
   const formikContext = useFormikContext<FormikValues & { [key: string]: any }>();
-  const { setValues, values, touched, errors, setFieldValue } = formikContext;
+  const { setValues, values, touched, errors, setFieldValue, submitForm } = formikContext;
 
   // Update Formik initial values when userData changes
   useEffect(() => {
@@ -271,6 +271,7 @@ export default function ProfileForm({ userData }: any) {
           <button
             type="submit"
             className="btn-primary px-10 py-2 text-white font-bold rounded-lg transition-all"
+            onClick={submitForm}
           >
             Guardar cambios
           </button>

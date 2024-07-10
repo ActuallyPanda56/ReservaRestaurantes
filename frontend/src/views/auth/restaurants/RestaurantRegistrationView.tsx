@@ -2,27 +2,43 @@
 
 import React, { useEffect, useState } from 'react';
 import useRestaurantRegisterForm from './hooks/useRestaurantForm';
-import { Field, FormikProvider } from 'formik';
+import { Field, FieldArray, FormikProvider } from 'formik';
 import MarkdownEditor from '@/components/common/MarkDownEditor';
 import ImageUploader from '@/components/common/ImageUploader';
-import { AspectRatio } from '@/components/constants/enums';
+import { AspectRatio, RestaurantType } from '@/components/constants/enums';
 import InputField from '@/components/common/FieldTypes/InputField';
 import RestaurantCapacity from './components/RestaurantCapacity';
 import BasicTable from '@/components/common/table/BasicTable';
+import RestaurantPhones from './components/RestaurantPhones';
+import RestaurantMenu from './components/RestaurantMenu';
 
 export default function RestaurantRegistrationView() {
-  const restaurantTypes = [
-    { value: 'restaurant', label: 'Restaurante' },
-    { value: 'bar', label: 'Bar' },
-    { value: 'dinner', label: 'Cena' },
-    { value: 'fast food', label: 'Comida rápida' },
-    // Add more options as needed
-  ];
-
   const [isEditing, setIsEditing] = useState(true);
 
   const formik = useRestaurantRegisterForm();
   const { values, touched, errors, submitForm } = formik;
+
+  const handleSaveTable = () => {
+    values.capacity = values.capacity.filter((table) => {
+      return !(
+        typeof table.tableCapacity !== 'number' ||
+        table.tableCapacity <= 0 ||
+        typeof table.tableCount !== 'number' ||
+        table.tableCount <= 0
+      );
+    });
+
+    // Delete tables with repeated capacity
+    values.capacity = values.capacity.filter(
+      (table, index, self) =>
+        index === self.findIndex((t) => t.tableCapacity === table.tableCapacity)
+    );
+
+    // Sort tables by capacity
+    values.capacity.sort((a, b) => +a.tableCapacity - +b.tableCapacity);
+
+    setIsEditing(false);
+  };
 
   return (
     <>
@@ -30,12 +46,9 @@ export default function RestaurantRegistrationView() {
         <div className="my-20 px-5 w-screen flex justify-center items-center">
           <div className="flex flex-col gap-3">
             <div className="flex flex-col">
-              <h1 className="text-4xl font-bold">
-                ¡Registra tu primer restaurante!
-              </h1>
+              <h1 className="text-4xl font-bold">¡Registra tu restaurante!</h1>
               <p>
-                Aquí podrás registrar tu primer restaurante para comenzar a
-                manejarlo
+                Aquí podrás registrar tu restaurante para comenzar a manejarlo.
               </p>
             </div>
 
@@ -61,11 +74,11 @@ export default function RestaurantRegistrationView() {
                 <span className="text-sm text-gray-500 tracking-tight font-bold">
                   Descripción de tu restaurante
                 </span>
-                <div className='max-w-[800px]'>
-                <MarkdownEditor
-                  name="description"
-                  placeholder="Escribe una descripción para tu restaurante..."
-                />
+                <div className="max-w-[800px]">
+                  <MarkdownEditor
+                    name="description"
+                    placeholder="Escribe una descripción para tu restaurante..."
+                  />
                 </div>
                 <span className="text-sm text-gray-500 tracking-tight font-bold">
                   Descripción corta de tu restaurante
@@ -84,6 +97,18 @@ export default function RestaurantRegistrationView() {
                     label="Banner de tu restaurante"
                   />
                 </div>
+                <span className="text-sm text-gray-500 tracking-tight font-bold">
+                  Teléfonos
+                </span>
+                <span className="text-xs text-gray-500 tracking-tight -mt-2">
+                  Ten en cuenta que solo aceptamos números de teléfono
+                  nacionales
+                </span>
+                <RestaurantPhones
+                  name="phoneNumber"
+                  label="Ej. 12345678"
+                  type="text"
+                />
               </div>
             </div>
 
@@ -103,7 +128,9 @@ export default function RestaurantRegistrationView() {
                 </span>
                 <div
                   className={`flex relative items-center gap-2 px-2 py-1 border border-[--shadow] rounded-lg transition-colors  ${
-                    values.type !== '' ? 'border-[--foreground] border-2' : ''
+                    values.type !== RestaurantType.restaurant
+                      ? 'border-[--foreground] border-2'
+                      : ''
                   }`}
                 >
                   {/* Dropdown for restaurant type */}
@@ -112,13 +139,13 @@ export default function RestaurantRegistrationView() {
                     name="type"
                     className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600 bg-white rounded-lg cursor-pointer"
                   >
-                    {restaurantTypes.map((option) => (
+                    {Object.values(RestaurantType).map((option) => (
                       <option
-                        key={option.value}
-                        value={option.value}
+                        key={option}
+                        value={option}
                         className="text-gray-900 hover:bg-gray-200"
                       >
-                        {option.label}
+                        {option}
                       </option>
                     ))}
                   </Field>
@@ -131,20 +158,33 @@ export default function RestaurantRegistrationView() {
                 </span>
                 <InputField name="address" type="text" label="Dirección" />
                 {isEditing ? (
-                  <div className="flex flex-col gap-2 w-full items-end">
+                  <div className="flex flex-col gap-2 w-full">
+                    <span className="text-sm text-gray-500 tracking-tight font-bold">
+                      Capacidad de tu restaurante
+                    </span>
+                    <div
+                      className={`flex text-gray-500 tracking-tight text-xs ${
+                        values.capacity.length > 1 ? 'gap-40' : 'gap-[216px]'
+                      }`}
+                    >
+                      <span>Tamaño de tus mesas</span>
+                      <span>Número de mesas</span>
+                    </div>
                     <RestaurantCapacity
                       name="capacity"
                       label="Capacidad de tu restaurante"
                       type="number"
                     />
-                    <button
-                      className="btn-primary"
-                      onClick={() => {
-                        setIsEditing(false);
-                      }}
-                    >
-                      Guardar
-                    </button>
+                    <div className="flex w-full justify-end">
+                      <button
+                        className="btn-primary w-[120px]"
+                        onClick={() => {
+                          handleSaveTable();
+                        }}
+                      >
+                        Guardar
+                      </button>
+                    </div>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-2 w-full items-end">
@@ -164,14 +204,19 @@ export default function RestaurantRegistrationView() {
                 )}
                 <div className="flex items-center gap-2">
                   <Field
+                    id="ageRestricted"
                     name="ageRestricted"
                     type="checkbox"
                     className="w-4 h-4"
                   />
-                  <label htmlFor="ageRestricted">
+                  <label
+                    htmlFor="ageRestricted"
+                    className="ml-2 block text-sm text-gray-900"
+                  >
                     ¿Tiene restricción de edad?
                   </label>
                 </div>
+
                 {touched.ageRestricted && errors.ageRestricted && (
                   <div className="text-red-500 text-xs mt-1">
                     {errors.ageRestricted}
@@ -180,7 +225,7 @@ export default function RestaurantRegistrationView() {
               </div>
             </div>
 
-            {/* Imágenes Opcionales */}
+            {/* Menú */}
             <div className="flex flex-col gap-3">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2 text-gray-600">
@@ -191,14 +236,24 @@ export default function RestaurantRegistrationView() {
                 </div>
                 <span className="text-sm text-gray-600">*No requerido</span>
               </div>
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 ">
                 <div
                   className={`flex relative items-center gap-2 justify-center w-full`}
                 >
-                  <ImageUploader name="menuPictures[0]" label="Menú" array />
+                  <ImageUploader
+                    name="menuPicture"
+                    label="Foto de tu menú"
+                    aspectRatio={AspectRatio.free}
+                  />
                 </div>
+                <span className="text-sm text-gray-500 tracking-tight font-bold mt-2">
+                  Añade los platos de tu menú
+                </span>
+                <RestaurantMenu name="menuInfo" label="Menú" />
               </div>
             </div>
+
+            {/* Imágenes Opcionales */}
             <div className="flex flex-col gap-3">
               <div className="flex flex-col">
                 <div className="flex items-center gap-2 text-gray-600">
@@ -230,7 +285,10 @@ export default function RestaurantRegistrationView() {
             <button
               type="submit"
               className="btn-primary mt-5"
-              onClick={submitForm}
+              onClick={() => {
+                handleSaveTable()
+                submitForm()
+              }}
             >
               Enviar Registro
             </button>

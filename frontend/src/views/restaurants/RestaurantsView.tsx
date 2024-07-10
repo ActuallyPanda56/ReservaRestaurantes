@@ -3,6 +3,7 @@
 import RestaurantCard from '@/components/common/RestaurantCard';
 import { RestaurantData } from '@/components/constants/interfaces';
 import axios from 'axios';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 export default function RestaurantsView() {
@@ -23,16 +24,21 @@ export default function RestaurantsView() {
   return (
     <>
       <div className="flex flex-col w-screen p-5 gap-5">
-        <div className="flex flex-col">
-          <h2 className="text-3xl font-bold">
-            Todos los restaurantes ({restaurants.length})
-          </h2>
-          <p className="tracking-tight text-gray-600 italic text-sm">
-            Aquí podrás ver todos los restaurantes disponibles.
-          </p>
+        <div className="flex justify-between">
+          <div className="flex flex-col">
+            <h2 className="text-3xl font-bold">
+              Todos los restaurantes ({restaurants.length})
+            </h2>
+            <p className="tracking-tight text-gray-600 italic text-sm">
+              Aquí podrás ver todos los restaurantes disponibles.
+            </p>
+          </div>
+          <Link href="/" className='btn-primary flex items-center justify-center h-12 rounded-lg hover:scale-105 transition-all'>
+            Volver
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
           {restaurants.map((restaurant) => (
             <RestaurantCard
               id={restaurant.id}

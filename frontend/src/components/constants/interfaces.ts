@@ -42,19 +42,40 @@ export interface RestaurantData {
   banner: string;
   address: string;
   phone_number?: string[];
-  email?: string;
   rating?: number;
-  schedule?: string;
+  capacity?: {
+    table_capacity: number;
+    table_count: number;
+  }[];
   age_restricted: boolean;
-  menuPictures: string[];
-  menuInfo: string[]
+  menu_pictures: string[];
+  menu_info: {
+    name: string;
+    description: string;
+    price: number;
+  }[];
   pictures: string[];
   type: RestaurantType;
+
+  // RELATIONS (RELATIONS DO NOT COME IN JSON FORMAT)
   reservations?: {
     date: string;
     time: string;
     table: number;
     customer: string;
     status: string;
+  }[];
+
+  schedule?: {
+    day: string;
+    start_time: string;
+    end_time: string;
+  }[];
+
+  reviews?: {
+    user_id: string;
+    rating: number;
+    title: string;
+    description: string;
   }[];
 }

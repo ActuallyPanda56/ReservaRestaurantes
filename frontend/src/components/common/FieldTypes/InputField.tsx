@@ -25,10 +25,10 @@ export default function InputField({
   const { values, touched, errors } = formikContext;
 
   return (
-    <div>
+    <div className='w-full'>
       <div
         className={`flex relative items-center gap-2 px-2 py-1 border border-[--shadow] rounded-lg transition-colors ${
-          values[name] !== '' ? 'border-[--foreground] border-2' : ''
+          values[name] !== '' && values[name] !== 0 ? 'border-[--foreground] border-2' : ''
         }`}
       >
         {values[name] !== '' && showLabel && (
