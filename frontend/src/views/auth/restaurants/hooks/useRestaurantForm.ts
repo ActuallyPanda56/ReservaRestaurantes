@@ -1,4 +1,4 @@
-import { RestaurantType } from '@/components/constants/enums';
+import { DayType, RestaurantType } from '@/components/constants/enums';
 import { userStore } from '@/store/user';
 import axios from 'axios';
 import { useFormik } from 'formik';
@@ -26,6 +26,11 @@ interface RestaurantRegisterData {
     tableCount: number | string;
   }[];
   ageRestricted: boolean;
+  schedule: {
+    day: DayType;
+    open: string;
+    close: string;
+  }[];
 }
 
 const useRestaurantRegisterForm = () => {
@@ -51,6 +56,13 @@ const useRestaurantRegisterForm = () => {
       },
     ],
     ageRestricted: false,
+    schedule: [
+      {
+        day: 'Lunes',
+        open: '08:00',
+        close: '20:00',
+      },
+    ],
   };
 
   // Define the Yup validation schema
@@ -99,7 +111,7 @@ const useRestaurantRegisterForm = () => {
               'unique',
               'Los nombres de los platos no deben repetirse',
               function (value) {
-                const menuInfo = this.parent;
+                const { menuInfo } = this.options.context;
                 const duplicates = menuInfo.filter(
                   (v: { name: string }) => v.name === value
                 );
@@ -140,6 +152,16 @@ const useRestaurantRegisterForm = () => {
     ageRestricted: Yup.boolean().required(
       'La restricción de edad es obligatoria'
     ),
+    schedule: Yup.array()
+      .of(
+        Yup.object().shape({
+          day: Yup.string().required('El día es obligatorio'),
+          open: Yup.string().required('La hora de apertura es obligatoria'),
+          close: Yup.string().required('La hora de cierre es obligatoria'),
+        })
+      )
+      .min(1, 'Debe haber al menos un horario')
+      .required('El horario es obligatorio'),
   });
 
   const formik = useFormik<RestaurantRegisterData>({

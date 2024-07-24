@@ -28,9 +28,6 @@ export default function RestaurantMenu({ name, label }: RestaurantMenuProps) {
     }
   }, [name, setFieldValue, values]);
 
-
-  console.log('VALUES: ' ,values[name]);
-
   return (
     <>
       <FieldArray

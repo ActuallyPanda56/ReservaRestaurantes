@@ -20,9 +20,6 @@ export default function RestaurantPhones({
   const [fieldNumber, setFieldNumber] = useState(1);
   const { values, touched, errors, setFieldValue } = formikContext;
 
-  console.log('ERRORS: ', errors);
-  console.log('TOUCHED: ', touched);
-
   useEffect(() => {
     if (!values[name] || values[name].length === 0) {
       setFieldValue(name, ['']);

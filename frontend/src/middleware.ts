@@ -1,26 +1,28 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
- 
-// This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
-  // renew the session every time the user visits the site
-  if (!request.cookies.has('session')) {
-    return NextResponse.redirect('/auth')
-  }
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { refreshSession } from './utils/session';
 
-  // if the user is logged in, redirect to the profile page on login and register routes
-  if (request.url.startsWith('/auth')) {
-    return NextResponse.redirect('/profile')
-  }
+export async function middleware(request: NextRequest) {
+  const { cookies, nextUrl } = request;
+  const token = cookies.get('userToken');
 
-  // if the user is not logged in, redirect to the login page on protected routes
-  if (request.url.startsWith('/profile')) {
-    return NextResponse.redirect('/auth')
+  const url = 'http://localhost:3000';
+
+  if (!token) {
+    // If no token, redirect to auth for protected routes
+    if (nextUrl.pathname.startsWith('/profile')) {
+      return NextResponse.redirect(url + '/auth');
+    }
+    return NextResponse.next();
   }
 }
- 
-// See "Matching Paths" below to learn more
+
+/* export async function middleware(request: NextRequest) {
+  return NextResponse.next();
+} */
+
+// Function to refresh session
+
 export const config = {
-  matcher: '/about/:path*',
-}
-
+  matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],
+};

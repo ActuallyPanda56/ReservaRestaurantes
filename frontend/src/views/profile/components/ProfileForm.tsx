@@ -4,8 +4,11 @@ import { Field, FormikValues, useFormikContext } from 'formik';
 import React, { useEffect } from 'react';
 
 export default function ProfileForm({ userData }: any) {
-  const formikContext = useFormikContext<FormikValues & { [key: string]: any }>();
-  const { setValues, values, touched, errors, setFieldValue, submitForm } = formikContext;
+  const formikContext = useFormikContext<
+    FormikValues & { [key: string]: any }
+  >();
+  const { setValues, values, touched, errors, setFieldValue, submitForm } =
+    formikContext;
 
   // Update Formik initial values when userData changes
   useEffect(() => {
@@ -14,7 +17,7 @@ export default function ProfileForm({ userData }: any) {
 
   // Function to update user data
   return (
-    <div className='flex flex-col gap-5'>
+    <div className="flex flex-col gap-5">
       <div className="flex gap-10">
         <div className="flex flex-col gap-1 pl-20 w-full">
           <span className="text-xl font-bold">Nombre</span>
@@ -164,7 +167,9 @@ export default function ProfileForm({ userData }: any) {
           )}
         </div>
         {touched.identification && errors.identification ? (
-          <div className="text-red-600 text-">{String(errors.identification)}</div>
+          <div className="text-red-600 text-">
+            {String(errors.identification)}
+          </div>
         ) : null}
       </div>
       <div className="flex flex-col gap-1 px-20">
@@ -195,36 +200,6 @@ export default function ProfileForm({ userData }: any) {
         </div>
         {touched.birthDate && errors.birthDate ? (
           <div className="text-red-600 text-">{String(errors.birthDate)}</div>
-        ) : null}
-      </div>
-      <div className="flex flex-col gap-1 px-20">
-        <span className="text-xl font-bold">Contraseña</span>
-        <div
-          className={`flex relative items-center gap-2 px-5 border-b outline rounded-lg py-3 transition-all ${
-            values.password !== userData.password
-              ? 'outline-[--foreground]'
-              : 'outline-gray-200 '
-          }`}
-        >
-          <Field
-            name="password"
-            type="password"
-            className="w-full h-full focus:outline-none text- py-2"
-          />
-          {values.password !== userData.password && (
-            <button
-              className="absolute right-2 btn-primary"
-              type="button"
-              onClick={() => {
-                setFieldValue('password', userData.password);
-              }}
-            >
-              Restablecer
-            </button>
-          )}
-        </div>
-        {touched.password && errors.password ? (
-          <div className="text-red-600 text-">{String(errors.password)}</div>
         ) : null}
       </div>
       <div className="flex flex-col gap-1 px-20">
@@ -265,7 +240,6 @@ export default function ProfileForm({ userData }: any) {
           values.phoneNumber !== userData.phoneNumber ||
           values.identification !== userData.identification ||
           values.birthDate !== userData.birthDate ||
-          values.password !== userData.password ||
           values.address !== userData.address ||
           values.profilePicture !== userData.profilePicture) && (
           <button

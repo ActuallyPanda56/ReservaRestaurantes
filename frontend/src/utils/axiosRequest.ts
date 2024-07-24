@@ -1,19 +1,21 @@
 import axios from 'axios';
-import { config }from '@/config';
+import { config } from '@/config';
 import { HttpMethods } from '@/components/constants/enums';
 
 const axiosRequest = async (
   method: HttpMethods,
   path: string,
-  data = {},
+  data = {}
 ): Promise<{
   status: number;
   data: any;
   error: any;
 }> => {
   // get token from local storage
-  const token = localStorage.getItem('token');
-  const url = config.API_URL + 'v1' + path;
+  const token = localStorage.getItem('userToken');
+
+  const url = config.API_URL + '/v1' + path;
+
   try {
     const response = await axios({
       method,

@@ -1,5 +1,5 @@
-import { StaticImageData } from "next/image";
-import { RestaurantType } from "./enums";
+import { StaticImageData } from 'next/image';
+import { RestaurantType } from './enums';
 
 export interface RestaurantCardProps {
   id: string;
@@ -24,7 +24,6 @@ export interface User {
   phoneNumber: string;
   identification: string;
   birthDate: string;
-  password: string;
   profilePicture: string;
   address: string;
   isRestaurantOwner: boolean;
@@ -38,12 +37,12 @@ export interface RestaurantData {
   user_id: string;
   name: string;
   description?: string;
-  short_description?: string;
+  short_description: string;
   banner: string;
   address: string;
-  phone_number?: string[];
+  phone_number: string[];
   rating?: number;
-  capacity?: {
+  capacity: {
     table_capacity: number;
     table_count: number;
   }[];

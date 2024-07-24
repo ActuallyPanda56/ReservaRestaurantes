@@ -11,9 +11,15 @@ import RestaurantCapacity from './components/RestaurantCapacity';
 import BasicTable from '@/components/common/table/BasicTable';
 import RestaurantPhones from './components/RestaurantPhones';
 import RestaurantMenu from './components/RestaurantMenu';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import RestaurantSchedule from './components/RestaurantSchedule';
 
 export default function RestaurantRegistrationView() {
   const [isEditing, setIsEditing] = useState(true);
+  const [isScheduleEditing, setIsScheduleEditing] = useState(true);
+
+  const router = useRouter();
 
   const formik = useRestaurantRegisterForm();
   const { values, touched, errors, submitForm } = formik;
@@ -44,6 +50,9 @@ export default function RestaurantRegistrationView() {
     <>
       <FormikProvider value={formik}>
         <div className="my-20 px-5 w-screen flex justify-center items-center">
+          <Link href="/" className="btn-alert fixed top-5 left-5 rounded-lg">
+            Cancelar
+          </Link>
           <div className="flex flex-col gap-3">
             <div className="flex flex-col">
               <h1 className="text-4xl font-bold">¡Registra tu restaurante!</h1>
@@ -74,7 +83,7 @@ export default function RestaurantRegistrationView() {
                 <span className="text-sm text-gray-500 tracking-tight font-bold">
                   Descripción de tu restaurante
                 </span>
-                <div className="max-w-[800px]">
+                <div className="max-w-[655px]">
                   <MarkdownEditor
                     name="description"
                     placeholder="Escribe una descripción para tu restaurante..."
@@ -282,12 +291,69 @@ export default function RestaurantRegistrationView() {
                 </div>
               </div>
             </div>
+
+            {/* Horario */}
+            <div className="flex flex-col gap-3">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2 text-gray-600">
+                  <div className="text-white bg-[--foreground] w-6 h-6 flex items-center justify-center rounded-xl text-lg font-bold">
+                    5
+                  </div>
+                  <h3>Horario</h3>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {isEditing ? (
+                  <div className="flex flex-col gap-2 w-full">
+                    <span className="text-sm text-gray-500 tracking-tight font-bold">
+                      Capacidad de tu restaurante
+                    </span>
+                    <div
+                      className={`flex text-gray-500 tracking-tight text-xs ${
+                        values.schedule.length > 1 ? 'gap-40' : 'gap-[216px]'
+                      }`}
+                    ></div>
+                    <RestaurantSchedule
+                      name="schedule"
+                      label="Capacidad de tu restaurante"
+                      type="number"
+                    />
+                    <div className="flex w-full justify-end">
+                      <button
+                        className="btn-primary w-[120px]"
+                        onClick={() => {
+                          handleSaveTable();
+                        }}
+                      >
+                        Guardar
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex flex-col gap-2 w-full items-end">
+                    <BasicTable
+                      rows={values.schedule}
+                      headers={['Día', 'Apertura', 'Cierre']}
+                    />
+                    <button
+                      className="btn-primary w-[80px]"
+                      onClick={() => {
+                        setIsEditing(true);
+                      }}
+                    >
+                      Editar
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <button
               type="submit"
               className="btn-primary mt-5"
               onClick={() => {
-                handleSaveTable()
-                submitForm()
+                handleSaveTable();
+                submitForm();
               }}
             >
               Enviar Registro

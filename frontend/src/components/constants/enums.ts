@@ -25,3 +25,13 @@ export enum BookingStatus {
   confirmed = 'Confirmada',
   canceled = 'Cancelada',
 }
+
+export type DayType =
+  | 'Lunes'
+  | 'Martes'
+  | 'Miércoles'
+  | 'Jueves'
+  | 'Viernes'
+  | 'Sábado'
+  | 'Domingo'
+  | 'festivos';

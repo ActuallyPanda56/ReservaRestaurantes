@@ -4,7 +4,7 @@ const { v4: uuidv4 } = require('uuid'); // For generating unique IDs
 // Register restaurant function
 const createRestaurant = (req, res) => {
   console.log(req.body)
-  const { userId, name, description, shortDescription, banner, pictures, menu, type, address, capacity, ageRestricted } = req.body;
+  const { userId, name, description, shortDescription, banner, pictures, menuInfo, menuPicture, type, address, capacity, ageRestricted } = req.body;
 
   // Verificar que se proporcionen todos los campos necesarios
   if (!userId || !name || !type || !address || !capacity || ageRestricted === undefined) {
@@ -14,8 +14,8 @@ const createRestaurant = (req, res) => {
   const id = uuidv4(); // Generar un ID único para el restaurante
 
   // Insertar restaurante en la base de datos
-  const sql = "INSERT INTO restaurant (id, user_id, name, description, short_description, banner, pictures, menu, type, address, rating, capacity, age_restricted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  db.query(sql, [id, userId, name, description, shortDescription ,banner, JSON.stringify(pictures), JSON.stringify(menu), type, address, 0, JSON.stringify(capacity), ageRestricted], (error, result) => {
+  const sql = "INSERT INTO restaurant (id, user_id, name, description, short_description, banner, pictures, menu_picture, menu_info, type, address, rating, capacity, age_restricted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  db.query(sql, [id, userId, name, description, shortDescription ,banner, JSON.stringify(pictures), menuPicture, JSON.stringify(menuInfo), type, address, 0, JSON.stringify(capacity), ageRestricted], (error, result) => {
     if (error) {
       console.error("Error executing query:", error);
       return res.status(500).json({ message: 'Error en el servidor' });

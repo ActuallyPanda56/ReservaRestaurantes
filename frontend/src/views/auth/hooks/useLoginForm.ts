@@ -1,5 +1,8 @@
+import { HttpMethods } from '@/components/constants/enums';
+import axiosRequest from '@/utils/axiosRequest';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 
 interface LoginData {
@@ -8,6 +11,8 @@ interface LoginData {
 }
 
 const useLoginForm = () => {
+  const router = useRouter();
+
   const initialValues = {
     email: '',
     password: '',
@@ -32,19 +37,47 @@ const useLoginForm = () => {
   const handleSubmit = async (data: LoginData) => {
     const { email, password } = data;
     try {
-      axios
+      /* axios
         .post('http://localhost:8081/v1/auth/login', { email, password })
         .then((res) => {
           if (res.status === 200) {
-            alert("Inicio de sesión Correcto. Implementar backend"); // Redirect to the desired page
-            console.log(res.data)
+            alert('Inicio de sesión Correcto. Implementar backend'); // Redirect to the desired page
+            console.log(res.data);
+            formik.resetForm();
+            router.back();
           }
         })
         .catch((err) => {
+          if (err.response.status === 401) {
+            alert('Usuario o contraseña incorrectos');
+            formik.setFieldValue('password', '');
+            return;
+          }
           console.error('Error en la solicitud:', err);
           alert('Error en la solicitud'); // Show an error message to the user
+        }); */
+
+      axiosRequest(HttpMethods.POST, '/auth/login', { email, password })
+        .then((res) => {
+          if (res.status === 200) {
+            localStorage.setItem('userToken', res.data.token);
+            formik.resetForm();
+            router.back();
+          }
+          if (res.status === 401) {
+            alert('Usuario o contraseña incorrectos');
+            formik.setFieldValue('password', '');
+            return;
+          }
+        })
+        .catch((err) => {
+          if (err.status === 401) {
+            alert('Usuario o contraseña incorrectos');
+            formik.setFieldValue('password', '');
+            return;
+          }
+          alert('Error en la solicitud'); // Show an error message to the user
         });
-      formik.resetForm();
     } catch (error) {
       alert('Error en la solicitud');
     }

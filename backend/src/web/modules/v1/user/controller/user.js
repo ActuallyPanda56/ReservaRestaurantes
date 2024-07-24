@@ -25,7 +25,17 @@ const getUserById = (req, res) => {
       return res.status(500).json("Internal Server Error");
     } else {
       if (data.length > 0) {
-        return res.status(200).json(data[0]);
+        return res.status(200).json({
+          id: data[0].id,
+          name: data[0].name,
+          lastName: data[0].last_name,
+          email: data[0].email,
+          phoneNumber: data[0].phone_number,
+          identification: data[0].identification,
+          birthDate: data[0].birth_date,
+          profilePicture: data[0].profile_picture,
+          address: data[0].address,
+        });
       } else {
         return res.status(404).json("User not found");
       }
@@ -69,7 +79,7 @@ const deleteUser = (req, res) => {
 
 // Function to update a user by ID
 const updateUser = (req, res) => {
-  const {id} = req.params;
+  const { id } = req.params;
   const { name, lastName, email, phoneNumber, profilePicture } = req.body;
 
   // Ensure the ID is provided

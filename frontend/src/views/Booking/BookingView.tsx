@@ -17,9 +17,9 @@ export default function BookingView() {
   const { restaurantId } = params;
 
   const formik = useBookingForm();
+  const { setFieldValue } = formik;
 
   const userData = userStore((state: any) => state.user);
-
 
   useEffect(() => {
     // fetch restaurant
@@ -36,9 +36,9 @@ export default function BookingView() {
           data.capacity = JSON.parse(data.capacity);
 
           setRestaurant(data);
-          console.log('data' ,data);
-          console.log('restaurant', restaurant);
         });
+
+      setFieldValue('restaurantId', restaurantId);
     } catch (error) {
       console.log(error);
     }
@@ -92,9 +92,7 @@ export default function BookingView() {
                 <h2 className="text-2xl font-bold mt-2">Horario</h2>
                 {restaurant?.schedule?.map((item, index) => (
                   <div key={item.day + index}>
-                    <h3 className="font-semibold">
-                      {item.day}
-                    </h3>
+                    <h3 className="font-semibold">{item.day}</h3>
                     <p className="italic text-gray-600">
                       {item.start_time} - {item.end_time}
                     </p>
@@ -108,7 +106,10 @@ export default function BookingView() {
               <h2 className="text-4xl font-bold">
                 Haz tu reservación en {restaurant?.name} ahora!!
               </h2>
-              <BookingForm userData={userData} ageRestricted={restaurant?.age_restricted}/>
+              <BookingForm
+                userData={userData}
+                ageRestricted={restaurant?.age_restricted}
+              />
             </div>
           </div>
         </div>

@@ -1,12 +1,15 @@
 'use client';
 
 import BasicTable from '@/components/common/table/BasicTable';
+import { HttpMethods } from '@/components/constants/enums';
 import { userStore } from '@/store/user';
+import axiosRequest from '@/utils/axiosRequest';
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 export default function ReservationView() {
   const userData = userStore((state: any) => state.user);
+  const [bookingData, setBookingData] = useState([]);
   const reservationData = [
     {
       name: 'Juan Perez',
@@ -167,6 +170,23 @@ export default function ReservationView() {
       restaurant: 'Restaurante 2',
     },
   ];
+
+  const checkDate = (date: string) => {
+    const currentDate = new Date();
+    const bookingDate = new Date(date);
+    return currentDate < bookingDate;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axiosRequest(
+        HttpMethods.GET,
+        `/booking/user/${userData.id}`
+      );
+      response.data.bookings.map((booking: any) => {});
+    };
+    fetchData();
+  }, []);
 
   const handleEdit = async (id: string) => {
     // TODO: Implement edit function in FORMIK form

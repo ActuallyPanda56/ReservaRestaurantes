@@ -1,23 +1,23 @@
 import { User } from '@/components/constants/interfaces';
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 const initialUser: User = {
-  id: '5ad66684-80c5-4d3e-943a-7f6d712c675c',
-  name: 'Actually',
-  lastName: 'Panda',
+  id: '026a94d6-89d7-4d40-8083-2b6a5f9ed783',
+  name: 'Actualmente',
+  lastName: 'Pandatastico',
   email: 'actuallypanda@gmail.com',
   phoneNumber: '1234567890',
-  identification: '1234567890',
-  birthDate: '2021-01-01',
-  password: '12345678',
+  identification: '',
+  birthDate: '',
   profilePicture: '',
-  address: '1234 Elm St.',
-  isRestaurantOwner: true
+  address: '',
+  isRestaurantOwner: true,
 };
 
 export const userStore = create((set) => ({
   user: initialUser,
   setUser: (user: User) => set({ user }),
-  updateUser: (user: Partial<User>) => set((state: any) => ({ user: { ...state.user, ...user } })),
+  updateUser: (user: Partial<User>) =>
+    set((state: any) => ({ user: { ...state.user, ...user } })),
   clearUser: () => set({ user: initialUser }),
-}))
+}));
