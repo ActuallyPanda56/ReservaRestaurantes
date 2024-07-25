@@ -92,9 +92,9 @@ export default function RestaurantDetailView() {
         <div className="flex gap-2">
           {/* SIDEBAR */}
           <div className="flex flex-col border-r-2 border-[--foreground] max-w-[400px]">
-            <picture className="bg-black">
+            <picture className="bg-white">
               <img
-                src={restaurant?.pictures[0] || cui.src}
+                src={restaurant?.pictures[0] || '/logo.svg'}
                 alt="LOGO"
                 className="object-cover aspect-square opacity-80"
               />

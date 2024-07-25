@@ -14,7 +14,13 @@ export default function Sidebar() {
   return (
     <div className="fixed flex flex-col items-center justify-between w-[150px] h-screen bg-[--foreground] py-10 md:py-10 text-white">
       <div className="flex flex-col items-center gap-5 md:gap-10">
-        <span className="text-lg md:text-xl lg:text-2xl">LOGO</span>
+        <img
+          src="/logo.svg"
+          alt="LOGO"
+          className="aspect-square"
+          height={60}
+          width={60}
+        />
         <Link href="/">
           <FaHouse className="text-2xl md:text-3xl" />
         </Link>

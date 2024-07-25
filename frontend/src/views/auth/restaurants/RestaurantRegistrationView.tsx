@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import useRestaurantRegisterForm from './hooks/useRestaurantForm';
-import { Field, FieldArray, FormikProvider } from 'formik';
+import { Field, FormikProvider } from 'formik';
 import MarkdownEditor from '@/components/common/MarkDownEditor';
 import ImageUploader from '@/components/common/ImageUploader';
 import { AspectRatio, RestaurantType } from '@/components/constants/enums';
@@ -11,18 +11,17 @@ import RestaurantCapacity from './components/RestaurantCapacity';
 import BasicTable from '@/components/common/table/BasicTable';
 import RestaurantPhones from './components/RestaurantPhones';
 import RestaurantMenu from './components/RestaurantMenu';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import RestaurantSchedule from './components/RestaurantSchedule';
+import { userStore } from '@/store/user';
 
 export default function RestaurantRegistrationView() {
   const [isEditing, setIsEditing] = useState(true);
-  const [isScheduleEditing, setIsScheduleEditing] = useState(true);
-
-  const router = useRouter();
 
   const formik = useRestaurantRegisterForm();
-  const { values, touched, errors, submitForm } = formik;
+  const { values, touched, errors, submitForm, setFieldValue } = formik;
+
+  const userId = userStore((state: any) => state.user.id);
 
   const handleSaveTable = () => {
     values.capacity = values.capacity.filter((table) => {
@@ -45,6 +44,10 @@ export default function RestaurantRegistrationView() {
 
     setIsEditing(false);
   };
+
+  useEffect(() => {
+    formik.setFieldValue('userId', userId);
+  }, [userId]);
 
   return (
     <>
@@ -306,7 +309,7 @@ export default function RestaurantRegistrationView() {
                 {isEditing ? (
                   <div className="flex flex-col gap-2 w-full">
                     <span className="text-sm text-gray-500 tracking-tight font-bold">
-                      Capacidad de tu restaurante
+                      Horario de tu restaurante
                     </span>
                     <div
                       className={`flex text-gray-500 tracking-tight text-xs ${
@@ -315,7 +318,7 @@ export default function RestaurantRegistrationView() {
                     ></div>
                     <RestaurantSchedule
                       name="schedule"
-                      label="Capacidad de tu restaurante"
+                      label="Horario de tu restaurante"
                       type="number"
                     />
                     <div className="flex w-full justify-end">

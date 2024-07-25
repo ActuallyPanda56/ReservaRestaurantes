@@ -38,7 +38,7 @@ const useRestaurantRegisterForm = () => {
   const router = useRouter();
 
   const initialValues: RestaurantRegisterData = {
-    userId: userId,
+    userId: '',
     name: '',
     description: '',
     shortDescription: '',
@@ -106,23 +106,9 @@ const useRestaurantRegisterForm = () => {
         Yup.object().shape({
           name: Yup.string()
             .min(3, 'El nombre del plato debe tener al menos 3 caracteres')
-            .required('El nombre del plato es obligatorio')
-            .test(
-              'unique',
-              'Los nombres de los platos no deben repetirse',
-              function (value) {
-                const { menuInfo } = this.options.context;
-                const duplicates = menuInfo.filter(
-                  (v: { name: string }) => v.name === value
-                );
-                return duplicates.length === 1;
-              }
-            ),
+            .required('El nombre del plato es obligatorio'),
           description: Yup.string()
-            .min(
-              10,
-              'La descripción del plato debe tener al menos 10 caracteres'
-            )
+            .min(4, 'La descripción del plato debe tener al menos 4 caracteres')
             .required('La descripción del plato es obligatoria'),
           price: Yup.number()
             .min(0, 'El precio debe ser un valor positivo')
@@ -174,8 +160,8 @@ const useRestaurantRegisterForm = () => {
     if (!data.userId) {
       alert('Error al obtener el usuario'); // Show an error message to the user
       router.push('/auth');
+      return;
     }
-    console.log(data);
     try {
       axios
         .post('http://localhost:8081/v1/restaurant/create', data)

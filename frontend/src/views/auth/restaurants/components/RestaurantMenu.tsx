@@ -7,13 +7,13 @@ interface RestaurantMenuProps {
   label: string;
 }
 
-enum FieldNames {
-  'name' = 'Nombre del platillo',
-  'description' = 'Descripción corta del platillo',
-  'price' = 'Precio',
-}
-
 export default function RestaurantMenu({ name, label }: RestaurantMenuProps) {
+  const fieldNames: { [key: string]: string } = {
+    name: 'Nombre',
+    description: 'Descripción',
+    price: 'Precio',
+  };
+
   const formikContext = useFormikContext<
     FormikValues & { [key: string]: any }
   >();
@@ -37,7 +37,10 @@ export default function RestaurantMenu({ name, label }: RestaurantMenuProps) {
             {values[name] &&
               values[name].length > 0 &&
               values[name].map((_: any, index: number) => (
-                <div key={index} className="w-full flex flex-col items-end gap-1">
+                <div
+                  key={index}
+                  className="w-full flex flex-col items-end gap-1"
+                >
                   <div className=" w-full grid grid-cols-3 grid-rows-2 gap-2">
                     {['name', 'price', 'description'].map((property) => (
                       <div
@@ -53,19 +56,12 @@ export default function RestaurantMenu({ name, label }: RestaurantMenuProps) {
                         <Field
                           name={`${name}[${index}].${property}`}
                           type={property === 'price' ? 'number' : 'text'}
-                          placeholder={FieldNames[property]}
+                          placeholder={fieldNames[property]}
                           className={`w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600 `}
                         />
                       </div>
                     ))}
                   </div>
-                  {touched[name] &&
-                    errors.menuInfo &&
-                    errors.menuInfo[index] && (
-                      <div className="text-red-500 text-xs mt-1">
-                        {errors.menuInfo[index][name] as string}
-                      </div>
-                    )}
                   {values[name].length > 1 && (
                     <button
                       type="button"
@@ -77,11 +73,11 @@ export default function RestaurantMenu({ name, label }: RestaurantMenuProps) {
                   )}
                 </div>
               ))}
-               <button
+            <button
               className="btn-primary rounded-lg w-full mt-2"
               onClick={() => {
                 setFieldNumber(fieldNumber + 1);
-                arrayHelpers.push({ name: '', description: '', price: ''});
+                arrayHelpers.push({ name: '', description: '', price: '' });
               }}
             >
               Agregar
