@@ -20,9 +20,10 @@ export const refreshSession = async () => {
       }
     );
 
-    console.log('Session refreshed');
+    console.log('Session refreshed', response.data);
     return response;
   } catch (error) {
+    console.error('Error refreshing session', error);
     throw new Error("Couldn't refresh session");
   }
 };

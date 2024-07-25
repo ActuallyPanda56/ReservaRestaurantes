@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require("uuid"); // For generating unique IDs
 
 // Define a secret key for signing the JWT
 const SECRET_KEY = "your_secret_key"; // Replace with a secure secret key
-const expirationTime = 60 * 60 * 24 * 7; // 1 week in seconds
+const expirationTime = 60 * 7; // 1 week in seconds
 
 // Login function
 const login = (req, res) => {
@@ -28,7 +28,7 @@ const login = (req, res) => {
               // User authenticated, generate a JWT
               const token = jwt.sign(
                 {
-                  exp: Math.floor(Date.now() / 1000) + expirationTime,
+                  exp: Math.floor(Date.now() / 1000) + expirationTime * 1000,
                   id: user.id,
                   name: user.name,
                   lastName: user.last_name,
@@ -39,7 +39,7 @@ const login = (req, res) => {
               const serialized = serialize("userToken", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                maxAge: expirationTime * 1000,
+                maxAge: expirationTime,
                 path: "/",
               });
               res.setHeader("Set-Cookie", serialized);
@@ -107,7 +107,7 @@ const register = (req, res) => {
             // Generate a JWT for the newly registered user
             const token = jwt.sign(
               {
-                exp: Math.floor(Date.now() / 1000) + expirationTime,
+                exp: Math.floor(Date.now() / 1000) + expirationTime * 1000,
                 id,
                 name,
                 lastName,
@@ -118,7 +118,7 @@ const register = (req, res) => {
             const serialized = serialize("userToken", token, {
               httpOnly: true,
               secure: process.env.NODE_ENV === "production",
-              maxAge: expirationTime * 1000,
+              maxAge: expirationTime,
               path: "/",
             });
             res.setHeader("Set-Cookie", serialized);
@@ -132,24 +132,25 @@ const register = (req, res) => {
 };
 
 const refreshSession = (req, res) => {
-  // Verify if the existing cookie is valid
-  const token = req.headers.cookie.split("=")[1];
-  try {
-    if (!token) {
-      return res.status(401).json({
-        message: "No token provided",
-      });
-    }
+  // Get the token from Authorization header
+  const token = req.headers.authorization.split(" ")[1];
 
-    jwt.verify(token, SECRET_KEY);
+  if (!token) {
+    return res.status(401).json({
+      message: "No token provided",
+    });
+  }
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
 
     // If the token is valid, create a new one
     const newToken = jwt.sign(
       {
-        exp: Math.floor(Date.now() / 1000) + expirationTime,
-        id: req.user.id,
-        name: req.user.name,
-        lastName: req.user.lastName,
+        exp: Math.floor(Date.now() / 1000) + expirationTime * 1000,
+        id: decoded.id,
+        name: decoded.name,
+        lastName: decoded.lastName,
       },
       SECRET_KEY
     );
@@ -157,7 +158,7 @@ const refreshSession = (req, res) => {
     const serialized = serialize("userToken", newToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      maxAge: expirationTime * 1000,
+      maxAge: expirationTime,
       path: "/",
     });
 
@@ -165,17 +166,18 @@ const refreshSession = (req, res) => {
     return res.json({
       message: "Session updated",
       user: {
-        id: req.user.id,
-        name: req.user.name,
-        lastName: req.user.lastName,
+        id: decoded.id,
+        name: decoded.name,
+        lastName: decoded.lastName,
       },
+      token: newToken,
     });
   } catch (error) {
     // If the token is invalid, clear the cookie
     const serialized = serialize("userToken", "", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      expires: new Date(0),
+      expires: new Date("Thu, 01 Jan 1970 00:00:00 GMT"),
       path: "/",
     });
 

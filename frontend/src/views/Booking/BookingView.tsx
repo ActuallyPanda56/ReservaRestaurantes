@@ -42,7 +42,7 @@ export default function BookingView() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [userData]);
 
   return (
     <>
@@ -67,7 +67,7 @@ export default function BookingView() {
             <div className="flex flex-col border-r-2 border-[--foreground] max-w-[400px]">
               <picture className="bg-black">
                 <img
-                  src={restaurant?.pictures[0] || cui.src}
+                  src={restaurant?.pictures[0] || '/logo.svg'}
                   alt="LOGO"
                   className="object-cover aspect-square opacity-80"
                 />

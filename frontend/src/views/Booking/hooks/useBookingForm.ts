@@ -2,7 +2,7 @@ import { BookingStatus, HttpMethods } from '@/components/constants/enums';
 import axiosRequest from '@/utils/axiosRequest';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 interface BookingData {
   userId: string;
@@ -18,6 +18,7 @@ interface BookingData {
 }
 
 const useBookingForm = () => {
+  const router = useRouter();
   const initialValues: BookingData = {
     userId: '',
     restaurantId: '',
@@ -70,11 +71,11 @@ const useBookingForm = () => {
 
   const handleSubmit = async (data: BookingData) => {
     // Format times before sending to the server
-    console.log(data.endTime);
     try {
       const res = await axiosRequest(HttpMethods.POST, '/booking/create', data);
-      if (res.status === 201) {
-        console.log('Booking created successfully');
+      if (res.status === 200) {
+        alert('Booking created successfully');
+        router.push(`/profile/my-reservations`);
       }
       if (res.status === 406) {
         alert('Booking failed. Not enough Capacity');

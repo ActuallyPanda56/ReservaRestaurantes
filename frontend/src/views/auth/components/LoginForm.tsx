@@ -15,7 +15,11 @@ export default function LoginForm() {
       <div className="flex flex-col justify-between h-full py-5">
         <div className="flex flex-col gap-5">
           <div className="flex flex-col">
-            <div className={`flex relative items-center gap-2 px-2 border-b transition-all ${values.email !== '' && 'border-[--foreground]' }`}>
+            <div
+              className={`flex relative items-center gap-2 px-2 border-b transition-all ${
+                values.email !== '' && 'border-[--foreground]'
+              }`}
+            >
               <Field
                 name="email"
                 type="text"
@@ -23,33 +27,29 @@ export default function LoginForm() {
                 className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
               />
             </div>
-            {errors.email && touched.email && <div className="text-red-500 text-xs mt-1">{errors.email}</div>}
+            {errors.email && touched.email && (
+              <div className="text-red-500 text-xs mt-1">{errors.email}</div>
+            )}
           </div>
           <div className="flex flex-col">
-            <div className={`flex relative items-center gap-2 px-2 border-b transition-all ${values.password !== '' && 'border-[--foreground]' }`}>
+            <div
+              className={`flex relative items-center gap-2 px-2 border-b transition-all ${
+                values.password !== '' && 'border-[--foreground]'
+              }`}
+            >
               <Field
                 name="password"
                 type={isPasswordShowing ? 'text' : 'password'}
                 placeholder="Contraseña"
                 className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
               />
-              <span
-                onClick={() => {
-                  setIsPasswordShowing(!isPasswordShowing);
-                }}
-                className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
-              >
-                {isPasswordShowing ? <GoEye /> : <GoEyeClosed />}
-              </span>
             </div>
-            {errors.password && touched.password && <div className="text-red-500 text-xs mt-1">{errors.password}</div>}
+            {errors.password && touched.password && (
+              <div className="text-red-500 text-xs mt-1">{errors.password}</div>
+            )}
           </div>
         </div>
-        <button
-          type="button"
-          onClick={submitForm}
-          className="btn-primary"
-        >
+        <button type="button" onClick={submitForm} className="btn-primary">
           Iniciar Sesión
         </button>
       </div>

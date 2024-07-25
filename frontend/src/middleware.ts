@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { refreshSession } from './utils/session';
 
 export async function middleware(request: NextRequest) {
   const { cookies, nextUrl } = request;

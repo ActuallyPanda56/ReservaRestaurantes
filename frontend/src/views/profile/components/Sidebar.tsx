@@ -4,7 +4,6 @@ import { userStore } from '@/store/user';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { FaCalendar, FaHouse, FaRegBell, FaUser } from 'react-icons/fa6';
-import { GiHelp } from 'react-icons/gi';
 import { IoSettingsSharp } from 'react-icons/io5';
 
 export default function Sidebar() {
@@ -19,9 +18,6 @@ export default function Sidebar() {
         <Link href="/">
           <FaHouse className="text-2xl md:text-3xl" />
         </Link>
-        <Link href="/profile/my-notifications">
-          <FaRegBell className="text-2xl md:text-3xl" />
-        </Link>
         <Link href="/profile/my-reservations">
           <FaCalendar className="text-2xl md:text-3xl" />
         </Link>
@@ -34,7 +30,6 @@ export default function Sidebar() {
           </Link>
         )}
       </div>
-      <GiHelp className="text-4xl md:text-5xl lg:text-6xl bg-[--shadow] rounded-full p-2 md:p-3 cursor-pointer" />
     </div>
   );
 }

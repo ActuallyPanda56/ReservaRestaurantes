@@ -1,12 +1,28 @@
-const mysql = require('mysql2/promise');
-const bcrypt = require('bcrypt');
-const users = require('./userSeeder');
-const restaurants = require('./restaurantSeeder');
-const reviews = require('./reviewSeeder');
-const bookings = require('./bookingSeeder');
-const schedules = require('./scheduleSeeder');
+const mysql = require("mysql2/promise");
+const { v4: uuidv4 } = require("uuid");
+const bcrypt = require("bcrypt");
+const users = require("./userSeeder");
+const restaurants = require("./restaurantSeeder");
+const reviews = require("./reviewSeeder");
+const bookings = require("./bookingSeeder");
+const schedules = require("./scheduleSeeder");
+
+const myUser = {
+  id: "a834e2cd-2c7a-4c63-9e52-ae259ac32031",
+  name: "admin",
+  last_name: "admin",
+  email: "admin@admin.com",
+  phone_number: "1234567890",
+  identification: "1234567890",
+  birth_date: "2000-01-01",
+  password: "123456789",
+  profile_picture: null,
+  address: "admin street 123",
+};
 
 async function seedDatabase() {
+  users.push(myUser);
+
   console.log("Connecting to database...");
   const db = await mysql.createConnection({
     host: "localhost",
@@ -24,21 +40,18 @@ async function seedDatabase() {
     const hashedPassword = await bcrypt.hash(user.password, saltRounds);
 
     const sql = `INSERT INTO User (id, name, last_name, email, phone_number, identification, birth_date, password, profile_picture, address) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    await db.query(
-      sql,
-      [
-        user.id,
-        user.name,
-        user.last_name,
-        user.email,
-        user.phone_number,
-        user.identification,
-        user.birth_date,
-        hashedPassword,
-        user.profile_picture,
-        user.address,
-      ]
-    );
+    await db.query(sql, [
+      user.id,
+      user.name,
+      user.last_name,
+      user.email,
+      user.phone_number,
+      user.identification,
+      user.birth_date,
+      hashedPassword,
+      user.profile_picture,
+      user.address,
+    ]);
   }
   console.log("Users inserted");
 
@@ -51,26 +64,23 @@ async function seedDatabase() {
   // Insert restaurants
   for (const restaurant of restaurants) {
     const sql = `INSERT INTO Restaurant (id, user_id, name, description, short_description, banner, pictures, menu_picture, menu_info, type, address, phone_number, rating, capacity, age_restricted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    await db.query(
-      sql,
-      [
-        restaurant.id,
-        restaurant.user_id,
-        restaurant.name,
-        restaurant.description,
-        restaurant.short_description,
-        restaurant.banner,
-        restaurant.pictures,
-        restaurant.menu_picture,
-        restaurant.menu_info,
-        restaurant.type,
-        restaurant.address,
-        restaurant.phone_number,
-        restaurant.rating,
-        restaurant.capacity,
-        restaurant.age_restricted,
-      ]
-    );
+    await db.query(sql, [
+      restaurant.id,
+      restaurant.user_id,
+      restaurant.name,
+      restaurant.description,
+      restaurant.short_description,
+      restaurant.banner,
+      restaurant.pictures,
+      restaurant.menu_picture,
+      restaurant.menu_info,
+      restaurant.type,
+      restaurant.address,
+      restaurant.phone_number,
+      restaurant.rating,
+      restaurant.capacity,
+      restaurant.age_restricted,
+    ]);
   }
   console.log("Restaurants inserted");
 
@@ -84,17 +94,14 @@ async function seedDatabase() {
   // Insert reviews
   for (const review of reviews) {
     const sql = `INSERT INTO Review (id, user_id, restaurant_id, rating, title, description) VALUES (?, ?, ?, ?, ?, ?)`;
-    await db.query(
-      sql,
-      [
-        review.id,
-        review.user_id,
-        review.restaurant_id,
-        review.rating,
-        review.title,
-        review.description,
-      ]
-    );
+    await db.query(sql, [
+      review.id,
+      review.user_id,
+      review.restaurant_id,
+      review.rating,
+      review.title,
+      review.description,
+    ]);
   }
   console.log("Reviews inserted");
 
@@ -107,22 +114,19 @@ async function seedDatabase() {
   // Insert bookings
   for (const booking of bookings) {
     const sql = `INSERT INTO Booking (id, user_id, restaurant_id, bearer_name, status, adults, children, price, date, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
-    await db.query(
-      sql,
-      [
-        booking.id,
-        booking.user_id,
-        booking.restaurant_id,
-        booking.bearer_name,
-        booking.status,
-        booking.adults,
-        booking.children,
-        booking.price,
-        booking.date,
-        booking.start_time,
-        booking.end_time,
-      ]
-    );
+    await db.query(sql, [
+      booking.id,
+      booking.user_id,
+      booking.restaurant_id,
+      booking.bearer_name,
+      booking.status,
+      booking.adults,
+      booking.children,
+      booking.price,
+      booking.date,
+      booking.start_time,
+      booking.end_time,
+    ]);
   }
   console.log("Bookings inserted");
 
@@ -134,16 +138,13 @@ async function seedDatabase() {
   // Insert schedules
   for (const schedule of schedules) {
     const sql = `INSERT INTO Schedule (id, restaurant_id, day, start_time, end_time) VALUES (?, ?, ?, ?, ?)`;
-    await db.query(
-      sql,
-      [
-        schedule.id,
-        schedule.restaurant_id,
-        schedule.day,
-        schedule.start_time,
-        schedule.end_time,
-      ]
-    );
+    await db.query(sql, [
+      schedule.id,
+      schedule.restaurant_id,
+      schedule.day,
+      schedule.start_time,
+      schedule.end_time,
+    ]);
   }
   console.log("Schedules inserted");
 

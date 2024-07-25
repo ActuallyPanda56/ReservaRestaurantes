@@ -1,9 +1,13 @@
+import { HttpMethods } from '@/components/constants/enums';
 import { User } from '@/components/constants/interfaces';
+import axiosRequest from '@/utils/axiosRequest';
 import axios from 'axios';
 import { useFormik } from 'formik';
+import { useRouter } from 'next/navigation';
 import * as Yup from 'yup';
 
 const useProfileForm = () => {
+  const router = useRouter();
   const initialValues = {
     id: '',
     name: '',
@@ -52,21 +56,19 @@ const useProfileForm = () => {
   });
 
   const handleSubmit = async (data: User) => {
-    try {
-      axios
-        .put('http://localhost:8081/v1/user/update/' + data.id, data)
-        .then((res) => {
-          if (res.status === 200) {
-            // Lógica de éxito
-            alert('Perfil actualizado exitosamente'); // Redirect to the desired page
-          }
-        })
-        .catch((err) => {
-          // Lógica de error
-          console.error('Error en la solicitud:', err);
-        });
-    } catch (error) {
-      alert('Error en la solicitud');
+    const response = await axiosRequest(
+      HttpMethods.PUT,
+      `/user/update/${data.id}`,
+      data
+    );
+
+    if (response.status === 200) {
+      alert('Profile updated successfully');
+      router.refresh();
+    }
+
+    if (response.status === 400) {
+      alert('Error updating profile');
     }
   };
 

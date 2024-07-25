@@ -9,167 +9,11 @@ import React, { useEffect, useState } from 'react';
 
 export default function ReservationView() {
   const userData = userStore((state: any) => state.user);
-  const [bookingData, setBookingData] = useState([]);
-  const reservationData = [
-    {
-      name: 'Juan Perez',
-      place: 'Mesa 1',
-      date: '2021-09-20',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Maria Lopez',
-      place: 'Mesa 2',
-      date: '2021-09-21',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Pedro Ramirez',
-      place: 'Mesa 3',
-      date: '2021-09-22',
-      restaurant: 'Restaurante 3',
-    },
-  ];
-  const prevReservationData = [
-    {
-      name: 'Juan Perez',
-      place: 'Mesa 1',
-      date: '2021-09-20',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Maria Lopez',
-      place: 'Mesa 2',
-      date: '2021-09-21',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Pedro Ramirez',
-      place: 'Mesa 3',
-      date: '2021-09-22',
-      restaurant: 'Restaurante 3',
-    },
-    {
-      name: 'Ana Torres',
-      place: 'Mesa 4',
-      date: '2021-09-23',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Carlos Fernandez',
-      place: 'Mesa 5',
-      date: '2021-09-24',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Luisa Martinez',
-      place: 'Mesa 6',
-      date: '2021-09-25',
-      restaurant: 'Restaurante 3',
-    },
-    {
-      name: 'Diego Suarez',
-      place: 'Mesa 7',
-      date: '2021-09-26',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Sofia Castillo',
-      place: 'Mesa 8',
-      date: '2021-09-27',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Jose Gomez',
-      place: 'Mesa 9',
-      date: '2021-09-28',
-      restaurant: 'Restaurante 3',
-    },
-    {
-      name: 'Carla Mendoza',
-      place: 'Mesa 10',
-      date: '2021-09-29',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Javier Morales',
-      place: 'Mesa 11',
-      date: '2021-09-30',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Laura Diaz',
-      place: 'Mesa 12',
-      date: '2021-10-01',
-      restaurant: 'Restaurante 3',
-    },
-    {
-      name: 'Francisco Rivera',
-      place: 'Mesa 13',
-      date: '2021-10-02',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Paula Chavez',
-      place: 'Mesa 14',
-      date: '2021-10-03',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Miguel Ortiz',
-      place: 'Mesa 15',
-      date: '2021-10-04',
-      restaurant: 'Restaurante 3',
-    },
-    {
-      name: 'Lucia Hernandez',
-      place: 'Mesa 16',
-      date: '2021-10-05',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Fernando Rojas',
-      place: 'Mesa 17',
-      date: '2021-10-06',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Isabel Vargas',
-      place: 'Mesa 18',
-      date: '2021-10-07',
-      restaurant: 'Restaurante 3',
-    },
-    {
-      name: 'Ramon Santos',
-      place: 'Mesa 19',
-      date: '2021-10-08',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Valeria Flores',
-      place: 'Mesa 20',
-      date: '2021-10-09',
-      restaurant: 'Restaurante 2',
-    },
-    {
-      name: 'Esteban Castillo',
-      place: 'Mesa 21',
-      date: '2021-10-10',
-      restaurant: 'Restaurante 3',
-    },
-    {
-      name: 'Marta Reyes',
-      place: 'Mesa 22',
-      date: '2021-10-11',
-      restaurant: 'Restaurante 1',
-    },
-    {
-      name: 'Alberto Gomez',
-      place: 'Mesa 23',
-      date: '2021-10-12',
-      restaurant: 'Restaurante 2',
-    },
-  ];
+  const [bookingData, setBookingData] = useState<any[]>([]);
+  const [prevBookingData, setPrevBookingData] = useState<any[]>([]);
+
+  let bookings: any[] = [];
+  let prevBookings: any[] = [];
 
   const checkDate = (date: string) => {
     const currentDate = new Date();
@@ -177,23 +21,60 @@ export default function ReservationView() {
     return currentDate < bookingDate;
   };
 
+  console.log('Booking data:', bookingData);
+  console.log('Prev booking data:', prevBookingData);
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await axiosRequest(
         HttpMethods.GET,
         `/booking/user/${userData.id}`
       );
-      response.data.bookings.map((booking: any) => {});
+
+      bookings = response.data.bookings
+        .filter((booking: any) => checkDate(booking.date))
+        .map((booking: any) => ({
+          id: booking.id,
+          name: booking.bearer_name,
+          place: booking.restaurant_address,
+          date: booking.date.split('T')[0],
+          restaurant: booking.restaurant_name,
+        }))
+        .sort((a: any, b: any) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA < dateB ? -1 : dateA > dateB ? 1 : 0;
+        });
+
+      prevBookings = response.data.bookings
+        .filter((booking: any) => !checkDate(booking.date))
+        .map((booking: any) => ({
+          id: booking.id,
+          name: booking.bearer_name,
+          place: booking.restaurant_address,
+          date: booking.date.split('T')[0],
+          restaurant: booking.restaurant_name,
+        }))
+        .sort((a: any, b: any) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA > dateB ? -1 : dateA < dateB ? 1 : 0;
+        });
+
+      setBookingData(bookings);
+      setPrevBookingData(prevBookings);
     };
     fetchData();
-  }, []);
-
-  const handleEdit = async (id: string) => {
-    // TODO: Implement edit function in FORMIK form
-  };
+  }, [userData]);
 
   const handleDelete = async (id: string) => {
-    // TODO: Implement delete function in FORMIK form
+    const response = await axiosRequest(HttpMethods.DELETE, `/booking/${id}`);
+    if (response.status === 200) {
+      setBookingData(bookingData.filter((booking) => booking.id !== id));
+      setPrevBookingData(
+        prevBookingData.filter((booking) => booking.id !== id)
+      );
+    }
   };
 
   return (
@@ -225,13 +106,10 @@ export default function ReservationView() {
         <div className="shadow-lg">
           <BasicTable
             headers={['Nombre', 'Lugar', 'Fecha', 'Restaurante']}
-            rows={reservationData}
+            rows={bookingData}
+            remove
+            removeFunction={handleDelete}
           />
-        </div>
-        <div className="flex w-full justify-end">
-          <button className="btn-primary rounded-lg">
-            Manejar reservaciones
-          </button>
         </div>
         <div className="w-full flex justify-between items-end">
           <h1 className="text-3xl font-bold">Reservaciones anteriores</h1>
@@ -239,7 +117,9 @@ export default function ReservationView() {
         <div className="flex shadow-lg">
           <BasicTable
             headers={['Nombre', 'Lugar', 'Fecha', 'Restaurante']}
-            rows={prevReservationData}
+            rows={prevBookingData}
+            remove
+            removeFunction={handleDelete}
           />
         </div>
       </div>

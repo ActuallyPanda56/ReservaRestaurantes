@@ -3,49 +3,64 @@
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { userStore } from '@/store/user';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const { id } = userStore((state: any) => state.user);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
   const links = [
     {
-      name: 'home',
-      url: '/',
+      name: 'About',
+      url: '/About',
     },
     {
-      name: 'home',
-      url: '/',
+      name: 'Contact',
+      url: '/Contact',
     },
     {
-      name: 'home',
-      url: '/',
+      name: 'Services',
+      url: '/Services',
     },
     {
-      name: 'home',
-      url: '/',
-    },
-    {
-      name: 'home',
-      url: '/',
-    },
-    {
-      name: 'Log In',
-      url: '/auth',
+      name: 'FAQ',
+      url: '/FAQ',
     },
   ];
   return (
     <>
       <div className="flex w-[300px] md:w-[700px] lg:w-[900px] h-[60px] justify-between items-center bg-white rounded-t-lg md:rounded-lg shadow-lg md:shadow md:absolute fixed top-10 left-0 right-0 mx-auto px-4 sm:px-10 z-50 text-xl">
-        <span>LOGO</span>
-        <div className="hidden md:flex gap-10">
+        <Link href="/">
+          <img
+            src="/logo.svg"
+            alt="logo"
+            width={45}
+            height={45}
+            className="cursor-pointer"
+          />
+        </Link>
+        <div className="hidden md:flex gap-10 items-center">
           {links.map((link, index) => (
             <Link key={index} href={link.url}>
               {link.name}
             </Link>
           ))}
+          {id !== '' ? (
+            <Link
+              href="/profile"
+              className="btn-primary bg-green-500 hover:bg-green-800 rounded-lg"
+            >
+              Mi Perfil
+            </Link>
+          ) : (
+            <Link href="/auth" className="btn-primary rounded-lg ">
+              Ingresar
+            </Link>
+          )}
         </div>
         <button
           className="md:hidden text-3xl focus:outline-none"

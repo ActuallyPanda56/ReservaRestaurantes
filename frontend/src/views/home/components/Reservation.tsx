@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 export default function Reservation() {
@@ -22,17 +23,20 @@ export default function Reservation() {
     setChildrenOpen(false);
   };
 
-  //  TODO: Implement FORMIK
+  const router = useRouter();
+
   return (
     <div className="bg-blue-100 rounded-lg p-8 w-full max-w-screen-lg mx-auto">
-      <h2 className="text-3xl font-semibold text-center mb-1">Book a Table</h2>
+      <h2 className="text-3xl font-semibold text-center mb-1">
+        Reserva tu mesa
+      </h2>
       <p className="text-gray-600 text-center mb-6">
-        Discover the perfect dining experience!
+        Descubre la experiencia perfecta de comida!
       </p>
       <form className="flex flex-wrap items-end justify-center gap-4">
         <div className="flex flex-col gap-1">
           <label htmlFor="date" className="font-bold mr-2">
-            Date
+            Fecha
           </label>
           <input
             id="date"
@@ -41,7 +45,7 @@ export default function Reservation() {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <span className="font-bold">Guests</span>
+          <span className="font-bold">Asistentes</span>
           <div className="flex gap-4 bg-white px-2 rounded-lg">
             <div className="relative flex">
               <label
@@ -49,7 +53,7 @@ export default function Reservation() {
                 className="font-bold cursor-pointer mr-2 py-2"
                 onClick={toggleAdultsDropdown}
               >
-                Adults ({adultsCount})
+                Adultos ({adultsCount})
               </label>
               {adultsOpen && (
                 <div className="absolute mt-1 w-24 bg-white border rounded-lg shadow-lg py-1 top-8 z-10">
@@ -71,7 +75,7 @@ export default function Reservation() {
                 className="font-bold cursor-pointer mr-2 py-2"
                 onClick={toggleChildrenDropdown}
               >
-                Children ({childrenCount})
+                Niños ({childrenCount})
               </label>
               {childrenOpen && (
                 <div className="absolute mt-1 w-24 bg-white border rounded-lg shadow-lg py-1 top-8 z-10">
@@ -91,10 +95,11 @@ export default function Reservation() {
         </div>
 
         <button
-          type="submit"
+          type="button"
+          onClick={() => router.push('/restaurants')}
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg ml-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          Book Now
+          Reserva Ahora
         </button>
       </form>
     </div>

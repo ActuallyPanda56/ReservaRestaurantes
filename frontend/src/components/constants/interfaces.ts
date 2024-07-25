@@ -57,11 +57,13 @@ export interface RestaurantData {
   type: RestaurantType;
 
   // RELATIONS (RELATIONS DO NOT COME IN JSON FORMAT)
-  reservations?: {
+  bookings?: {
+    bearer_name: string;
+    adults: number;
+    children: number;
     date: string;
-    time: string;
-    table: number;
-    customer: string;
+    start_time: string;
+    end_time: string;
     status: string;
   }[];
 

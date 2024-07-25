@@ -130,21 +130,6 @@ export default function RegisterForm() {
                 placeholder="Contraseña"
                 className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
               ></Field>
-              {isPasswordShowing ? (
-                <GoEye
-                  onClick={() => {
-                    setIsPasswordShowing(!isPasswordShowing);
-                  }}
-                  className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
-                />
-              ) : (
-                <GoEyeClosed
-                  onClick={() => {
-                    setIsPasswordShowing(!isPasswordShowing);
-                  }}
-                  className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
-                />
-              )}
             </div>
             {touched.password && errors.password && (
               <div className="text-red-500 text-xs mt-1">{errors.password}</div>
@@ -164,21 +149,6 @@ export default function RegisterForm() {
                 placeholder="Confirma tu contraseña"
                 className="w-full h-full focus:outline-none text-sm placeholder:tracking-tight py-2 placeholder:text-gray-600"
               ></Field>
-              {isConfirmPasswordShowing ? (
-                <GoEye
-                  onClick={() => {
-                    setIsConfirmPasswordShowing(!isConfirmPasswordShowing);
-                  }}
-                  className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
-                />
-              ) : (
-                <GoEyeClosed
-                  onClick={() => {
-                    setIsConfirmPasswordShowing(!isConfirmPasswordShowing);
-                  }}
-                  className="cursor-pointer absolute right-2 top-1/2 transform -translate-y-1/2"
-                />
-              )}
             </div>
             {touched.confirmPassword && errors.confirmPassword && (
               <div className="text-red-500 text-xs mt-1">

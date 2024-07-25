@@ -40,6 +40,11 @@ const getRestaurantByUserId = (req, res) => {
         FROM review 
         WHERE restaurant_id = ?`;
 
+  const bookingSql = `
+        SELECT id, user_id, bearer_name, status, adults, children, date, start_time, end_time, created_at
+        FROM booking
+        WHERE restaurant_id = ?`;
+
   db.query(restaurantSql, [id], (error, restaurantData) => {
     if (error) {
       console.error("Error executing query:", error);
@@ -63,19 +68,32 @@ const getRestaurantByUserId = (req, res) => {
                   return res.status(500).json("Internal Server Error");
                 } else {
                   restaurant.reviews = reviewData;
-                  restaurants[index] = restaurant;
-                  completedRequests++;
 
-                  if (completedRequests === restaurantData.length) {
-                    return res.status(200).json(restaurants);
-                  }
+                  db.query(
+                    bookingSql,
+                    [restaurant.id],
+                    (error, bookingData) => {
+                      if (error) {
+                        console.error("Error executing query:", error);
+                        return res.status(500).json("Internal Server Error");
+                      } else {
+                        restaurant.bookings = bookingData;
+                        restaurants[index] = restaurant;
+                        completedRequests++;
+
+                        if (completedRequests === restaurantData.length) {
+                          return res.status(200).json(restaurants);
+                        }
+                      }
+                    }
+                  );
                 }
               });
             }
           });
         });
       } else {
-        return res.status(404).json("Ningún restaurante encontrado");
+        return res.status(404).json("No restaurant found");
       }
     }
   });

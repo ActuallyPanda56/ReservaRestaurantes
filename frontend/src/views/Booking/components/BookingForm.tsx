@@ -11,7 +11,6 @@ export default function BookingForm({
   userData: User;
   ageRestricted: boolean | undefined;
 }) {
-  // TODO: Function to find the fastest reservation time
   const formikContext = useFormikContext<
     FormikValues & { [key: string]: any }
   >();
@@ -24,7 +23,7 @@ export default function BookingForm({
       userId: userData.id,
       bearerName: userData.name + ' ' + userData.lastName,
     });
-  }, []);
+  }, [userData]);
 
   return (
     <>

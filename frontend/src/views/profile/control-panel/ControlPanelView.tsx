@@ -16,27 +16,69 @@ export default function ControlPanelView() {
 
   const userId = userStore((state: any) => state.user?.id);
 
-  const getRestaurants = async () => {
-    try {
-      const { data } = await axios.get(
-        `http://localhost:8081/v1/restaurant/user/${userId}`
-      );
-      if (!data || data.length === 0) {
-        return;
-      }
-      setRestaurantData(data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const toggleRestaurant = (index: number) => {
     setOpenRestaurantIndex(openRestaurantIndex === index ? null : index);
   };
 
+  const isForToday = (date: string) => {
+    const today = new Date();
+    const reservationDate = new Date(date);
+    return (
+      today.getDate() === reservationDate.getDate() &&
+      today.getMonth() === reservationDate.getMonth() &&
+      today.getFullYear() === reservationDate.getFullYear()
+    );
+  };
+
+  function isRestaurantOpen(schedule: any) {
+    const daysOfWeek = [
+      'domingo',
+      'lunes',
+      'martes',
+      'miércoles',
+      'jueves',
+      'viernes',
+      'sábado',
+    ];
+
+    const now = new Date();
+    const currentDay = daysOfWeek[now.getDay()];
+    const currentTime = now.toTimeString().split(' ')[0]; // Format current time as "HH:MM:SS"
+
+    for (const entry of schedule) {
+      if (entry.day === currentDay) {
+        if (entry.start_time <= currentTime && currentTime <= entry.end_time) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   useEffect(() => {
+    const getRestaurants = async () => {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:8081/v1/restaurant/user/${userId}`
+        );
+        if (!data || data.length === 0) {
+          return;
+        }
+        data.map((restaurant: any) => {
+          restaurant.phone_number = JSON.parse(restaurant.phone_number);
+          restaurant.menu_info = JSON.parse(restaurant.menu_info);
+          restaurant.capacity = JSON.parse(restaurant.capacity);
+          restaurant.pictures = JSON.parse(restaurant.pictures);
+          return restaurant;
+        });
+        setRestaurantData(data);
+      } catch (error) {
+        return;
+      }
+    };
+
     getRestaurants();
-  }, []);
+  }, [userId]);
 
   return (
     <div className="flex flex-col my-20 mx-20 pr-20 gap-20 w-full">
@@ -76,9 +118,9 @@ export default function ControlPanelView() {
                   <h2 className="text-2xl font-semibold">{restaurant.name}</h2>
                   <div className="flex items-center gap-2 text-gray-500">
                     <p>
-                      {restaurant.schedule && restaurant.schedule.length > 0
-                        ? JSON.stringify(restaurant.schedule)
-                        : 'Horario no disponible'}
+                      {isRestaurantOpen(restaurant.schedule)
+                        ? 'Abierto'
+                        : 'Cerrado'}
                     </p>
                     <FaCaretDown
                       className={`text-xl ${
@@ -106,7 +148,8 @@ export default function ControlPanelView() {
                         <div className="flex items-center gap-1 text-gray-500">
                           <span>Números de teléfono:</span>
                           <p>
-                            {restaurant.phone_number
+                            {restaurant.phone_number &&
+                            restaurant.phone_number.length > 0
                               ? restaurant.phone_number.map(
                                   (phone_number, phoneIndex) => (
                                     <span key={phoneIndex}>
@@ -119,35 +162,59 @@ export default function ControlPanelView() {
                         </div>
                       </div>
                       <div className="flex flex-col gap-5 mt-4 px-5 pb-3">
-                        <h3 className="text-xl font-semibold">Reservaciones</h3>
+                        <h3 className="text-xl font-semibold">
+                          Reservaciones para hoy
+                        </h3>
                         <div className="flex flex-col gap-5">
-                          {restaurant.reservations ? (
-                            restaurant.reservations.map(
-                              (reservation, resIndex) => (
+                          {restaurant.bookings &&
+                          restaurant.bookings.filter((res) => {
+                            return isForToday(res.date);
+                          }).length > 0 ? (
+                            restaurant.bookings
+                              .filter((reservation) => {
+                                return isForToday(reservation.date);
+                              })
+                              .map((reservation, resIndex) => (
                                 <div
                                   key={resIndex}
                                   className="flex justify-between items-center p-3 bg-gray-100 rounded-lg"
                                 >
                                   <div className="flex flex-col gap-1">
                                     <p className="text-gray-500">
-                                      {reservation.date} - {reservation.time}
+                                      {reservation.date.split('T')[0]} de{' '}
+                                      {new Date(
+                                        `1970-01-01T${reservation.start_time}Z`
+                                      ).toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                      })}{' '}
+                                      a{' '}
+                                      {new Date(
+                                        `1970-01-01T${reservation.end_time}Z`
+                                      ).toLocaleTimeString([], {
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                      })}
                                     </p>
                                     <p className="text-gray-500">
-                                      Mesa: {reservation.table}
+                                      Cliente: {reservation.bearer_name}
                                     </p>
                                     <p className="text-gray-500">
-                                      Cliente: {reservation.customer}
+                                      Adultos: {reservation.adults} - Niños:{' '}
+                                      {reservation.children}
+                                    </p>
+                                    <p className="text-gray-500">
+                                      Estado: {reservation.status}
                                     </p>
                                   </div>
                                   <p className="text-gray-500">
                                     {reservation.status}
                                   </p>
                                 </div>
-                              )
-                            )
+                              ))
                           ) : (
                             <p className="text-gray-500">
-                              No hay reservaciones
+                              No hay reservaciones para hoy.
                             </p>
                           )}
                         </div>
@@ -156,13 +223,13 @@ export default function ControlPanelView() {
                   )}
                 </motion.div>
               </div>
-              {openRestaurantIndex === index && (
+              {/* {openRestaurantIndex === index && (
                 <div className="flex justify-end">
                   <button className="btn-primary rounded-lg w-[120px]">
                     Ver más
                   </button>
                 </div>
-              )}
+              )} */}
             </div>
           ))}
         {restaurantData.length === 0 && (
