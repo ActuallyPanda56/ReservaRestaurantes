@@ -21,11 +21,11 @@ export default function RestaurantRegistration() {
           className="w-full aspect-video rounded-xl shadow-xl bg-red-300 relative hover:scale-105 transition-all cursor-pointer"
         >
           <Image
-            src={cui}
+            src="/RegistrationBanner.jpg"
             alt="Restaurant Registration"
             width={400}
             height={400}
-            className="object-cover aspect-video h-full w-full rounded-lg"
+            className="object-cover aspect-video h-full w-full rounded-lg shadow-xl"
           />
           <span className="text-3xl text-white font-bold absolute bottom-10 left-10">
             Registra tu restaurante aquí

@@ -9,7 +9,10 @@ export async function middleware(request: NextRequest) {
 
   if (!token) {
     // If no token, redirect to auth for protected routes
-    if (nextUrl.pathname.startsWith('/profile')) {
+    if (
+      nextUrl.pathname.startsWith('/profile') ||
+      nextUrl.pathname.startsWith('/booking')
+    ) {
       return NextResponse.redirect(url + '/auth');
     }
     return NextResponse.next();

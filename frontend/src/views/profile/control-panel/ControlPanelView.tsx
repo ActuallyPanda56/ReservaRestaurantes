@@ -238,6 +238,12 @@ export default function ControlPanelView() {
           </div>
         )}
       </div>
+      <Link
+        href="/auth/restaurants"
+        className="btn-primary w-80 flex justify-center rounded-lg"
+      >
+        Registra otro restaurante
+      </Link>
     </div>
   );
 }

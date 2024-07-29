@@ -16,6 +16,16 @@ export default function RestaurantSchedule({
   const formikContext = useFormikContext<
     FormikValues & { [key: string]: any }
   >();
+
+  const initialValues = [
+    { day: 'Lunes', open: '08:00', close: '20:00' },
+    { day: 'Martes', open: '08:00', close: '20:00' },
+    { day: 'Miércoles', open: '08:00', close: '20:00' },
+    { day: 'Jueves', open: '08:00', close: '20:00' },
+    { day: 'Viernes', open: '08:00', close: '20:00' },
+    { day: 'Sábado', open: '08:00', close: '20:00' },
+    { day: 'Domingo', open: '08:00', close: '20:00' },
+  ];
   const days: DayType[] = [
     'Lunes',
     'Martes',
@@ -34,7 +44,7 @@ export default function RestaurantSchedule({
   // Ensure the initial values are set up correctly
   useEffect(() => {
     if (!values[name] || values[name].length === 0) {
-      setFieldValue(name, [{ day: 'Lunes', open: '08:00', close: '20:00' }]);
+      setFieldValue(name, initialValues);
     }
   }, [name, setFieldValue, values]);
 
@@ -89,22 +99,30 @@ export default function RestaurantSchedule({
           </>
         )}
       />
-      <button
-        onClick={() => {
-          setFieldNumber(fieldNumber + 1);
-          setFieldValue(name, [
-            ...values[name],
-            {
-              day: days[fieldNumber],
-              open: values[name][fieldNumber - 1].open ?? '08:00',
-              close: values[name][fieldNumber - 1].close ?? '20:00',
-            },
-          ]);
-        }}
-        className="btn-primary rounded-lg w-full mt-2"
-      >
-        Añadir día
-      </button>
+      <div className="flex items-center justify-between gap-4">
+        <button
+          onClick={() => {
+            setFieldValue(name, initialValues);
+          }}
+          className="btn-primary rounded-lg w-full mt-2"
+        >
+          Restablecer
+        </button>
+
+        {/* Establece todas las horas de apertura y cierre como las del lunes */}
+        <button
+          onClick={() => {
+            const monday = values[name][0];
+            values[name].map((_: any, index: number) => {
+              setFieldValue(`${name}[${index}].open`, monday.open);
+              setFieldValue(`${name}[${index}].close`, monday.close);
+            });
+          }}
+          className="btn-primary rounded-lg w-full mt-2"
+        >
+          Establecer para todos los días
+        </button>
+      </div>
     </div>
   );
 }

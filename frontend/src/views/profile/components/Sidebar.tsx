@@ -9,15 +9,13 @@ import { IoSettingsSharp } from 'react-icons/io5';
 export default function Sidebar() {
   const { isRestaurantOwner } = userStore((state: any) => state.user);
 
-  // TODO: Search if user is restaurant Owner in the db
-
   return (
     <div className="fixed flex flex-col items-center justify-between w-[150px] h-screen bg-[--foreground] py-10 md:py-10 text-white">
       <div className="flex flex-col items-center gap-5 md:gap-10">
         <img
           src="/logo.svg"
           alt="LOGO"
-          className="aspect-square"
+          className="aspect-square text-white"
           height={60}
           width={60}
         />

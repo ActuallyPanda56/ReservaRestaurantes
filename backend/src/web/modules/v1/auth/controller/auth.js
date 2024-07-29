@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require("uuid"); // For generating unique IDs
 
 // Define a secret key for signing the JWT
 const SECRET_KEY = "your_secret_key"; // Replace with a secure secret key
-const expirationTime = 60 * 7; // 1 week in seconds
+const expirationTime = 60 * 60 * 24 * 7; // 1 week in seconds
 
 // Login function
 const login = (req, res) => {
@@ -28,7 +28,7 @@ const login = (req, res) => {
               // User authenticated, generate a JWT
               const token = jwt.sign(
                 {
-                  exp: Math.floor(Date.now() / 1000) + expirationTime * 1000,
+                  exp: Math.floor(Date.now() / 1000) + expirationTime,
                   id: user.id,
                   name: user.name,
                   lastName: user.last_name,
@@ -107,7 +107,7 @@ const register = (req, res) => {
             // Generate a JWT for the newly registered user
             const token = jwt.sign(
               {
-                exp: Math.floor(Date.now() / 1000) + expirationTime * 1000,
+                exp: Math.floor(Date.now() / 1000) + expirationTime,
                 id,
                 name,
                 lastName,
@@ -147,7 +147,7 @@ const refreshSession = (req, res) => {
     // If the token is valid, create a new one
     const newToken = jwt.sign(
       {
-        exp: Math.floor(Date.now() / 1000) + expirationTime * 1000,
+        exp: Math.floor(Date.now() / 1000) + expirationTime,
         id: decoded.id,
         name: decoded.name,
         lastName: decoded.lastName,
